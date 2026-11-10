@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { siteConfig } from '../data/siteConfig'
+import { prefersReducedMotion } from '../lib/reduced-motion'
 import { whatsappOrderLink } from '../lib/whatsapp'
 
 interface HeroProps {
@@ -6,6 +8,7 @@ interface HeroProps {
 }
 
 export default function Hero({ onReplay }: HeroProps) {
+  const [reducedMotion] = useState(prefersReducedMotion)
   return (
     <section
       className="relative w-full px-margin pt-4 pb-8 overflow-hidden bg-gradient-to-b from-secondary-container/20 via-surface-container-low to-surface"
@@ -80,14 +83,16 @@ export default function Hero({ onReplay }: HeroProps) {
         </button>
 
         {/* Replay Toast Button */}
-        <button
-          type="button"
-          className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest hover:bg-surface-variant text-on-surface border border-outline-variant/60 shadow-xs active:scale-95 transition-all text-xs font-label-md"
-          onClick={onReplay}
-        >
-          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">replay</span>
-          <span>🍻 Rever Brinde de Abertura</span>
-        </button>
+        {!reducedMotion && (
+          <button
+            type="button"
+            className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest hover:bg-surface-variant text-on-surface border border-outline-variant/60 shadow-xs active:scale-95 transition-all text-xs font-label-md"
+            onClick={onReplay}
+          >
+            <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">replay</span>
+            <span>🍻 Rever Brinde de Abertura</span>
+          </button>
+        )}
 
         {/* Main Catchphrase Title */}
         <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface uppercase tracking-tight mt-1 mb-2">

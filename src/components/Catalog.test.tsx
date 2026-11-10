@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { products, type Product } from '../data/products'
+import { catalogItems, comboDuffCraft, combos, products, type Product } from '../data/products'
 import { CartProvider, useCart } from '../lib/cart'
 import Catalog from './Catalog'
 
@@ -111,6 +111,78 @@ describe('Catalog', () => {
     for (const image of imagens) {
       expect(image.getAttribute('src')).not.toMatch(/^https?:/i)
       expect(image.getAttribute('src')).not.toContain('lh3.googleusercontent')
+    }
+  })
+})
+
+const combosDisponiveis = [comboDuffCraft, ...combos]
+
+describe('Filtros das demais categorias do cardápio', () => {
+  it('pill Combos mostra os 3 combos e nenhum produto de bebida', async () => {
+    const user = userEvent.setup()
+    renderCatalog()
+
+    await user.click(screen.getByRole('button', { name: 'Combos' }))
+
+    expect(screen.getAllByRole('button', { name: /Adicionar$/ })).toHaveLength(3)
+    for (const combo of combosDisponiveis) {
+      expect(screen.getByText(combo.name)).toBeInTheDocument()
+    }
+    for (const product of products) {
+      expect(screen.queryByText(product.name)).not.toBeInTheDocument()
+    }
+  })
+
+  it('pill Refris & Não Alcoólicos mostra Flaming Moe, Buzz Cola e Red Homer', async () => {
+    const user = userEvent.setup()
+    const naoAlcoolicos = ['flaming-moe-mix', 'buzz-cola-350', 'red-homer-473'].map(productById)
+    renderCatalog()
+
+    await user.click(screen.getByRole('button', { name: 'Refris & Não Alcoólicos' }))
+
+    expect(screen.getAllByRole('button', { name: /Adicionar$/ })).toHaveLength(3)
+    for (const product of naoAlcoolicos) {
+      expect(screen.getByText(product.name)).toBeInTheDocument()
+    }
+    for (const product of products.filter(({ category }) => category !== 'sem-alcool')) {
+      expect(screen.queryByText(product.name)).not.toBeInTheDocument()
+    }
+  })
+
+  it('pill Artesanais & Growlers mostra Fudd Beer e Chopp Dev IPA', async () => {
+    const user = userEvent.setup()
+    const artesanais = ['fudd-dark-500', 'growler-ipa-1l'].map(productById)
+    renderCatalog()
+
+    await user.click(screen.getByRole('button', { name: 'Artesanais & Growlers' }))
+
+    expect(screen.getAllByRole('button', { name: /Adicionar$/ })).toHaveLength(2)
+    for (const product of artesanais) {
+      expect(screen.getByText(product.name)).toBeInTheDocument()
+    }
+    for (const product of products.filter(({ category }) => category !== 'artesanais')) {
+      expect(screen.queryByText(product.name)).not.toBeInTheDocument()
+    }
+  })
+
+  it('catalogItems exporta os 8 produtos + os 3 combos', () => {
+    expect(catalogItems).toHaveLength(products.length + combosDisponiveis.length)
+  })
+
+  it('voltar para Todas restaura os 8 produtos do cardápio sem os combos', async () => {
+    const user = userEvent.setup()
+    renderCatalog()
+
+    await user.click(screen.getByRole('button', { name: 'Combos' }))
+    await user.click(screen.getByRole('button', { name: 'Todas' }))
+
+    expect(screen.getByText('8 ITENS DISPONÍVEIS')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Adicionar$/ })).toHaveLength(products.length)
+    for (const product of products) {
+      expect(screen.getByText(product.name)).toBeInTheDocument()
+    }
+    for (const combo of combosDisponiveis) {
+      expect(screen.queryByText(combo.name)).not.toBeInTheDocument()
     }
   })
 })

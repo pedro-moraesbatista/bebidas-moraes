@@ -13,7 +13,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="product-card flex flex-col justify-between p-space-md rounded-xl bg-surface-container shadow-sm hover:shadow-md transition-shadow">
       <div>
         <div className="relative w-full h-48 rounded-lg overflow-hidden bg-surface-container-high mb-3 flex items-center justify-center">
-          <img alt={product.alt} className="w-full h-full object-cover" src={product.img} />
+          <img alt={product.alt} className="w-full h-full object-cover" decoding="async" loading="lazy" src={product.img} />
           {product.badge && (
             <span
               className={`absolute top-2 left-2 px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold ${badgeToneClasses[product.badge.tone]}`}

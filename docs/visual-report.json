@@ -1,0 +1,132 @@
+{
+  "base": "http://localhost:4173",
+  "total": 25,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "splash visível na carga",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "splash fecha via botão Pular",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: sem overflow horizontal",
+      "pass": true,
+      "detail": "scroll=390 client=390 BUTTON.px-4 py-2 rounded-full font-label-md tex,BUTTON.px-4 py-2 rounded-full font-label-md tex,BUTTON.px-4 py-2 rounded-full font-label-md tex"
+    },
+    {
+      "name": "mobile: imagens carregadas",
+      "pass": true,
+      "detail": "11 imgs, 0 quebradas"
+    },
+    {
+      "name": "mobile: sem imagens remotas",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "tablet: sem overflow horizontal",
+      "pass": true,
+      "detail": "scroll=768 client=768 DIV.p-space-md bg-surface-container flex ite,DIV.flex items-center gap-2,SPAN.material-symbols-outlined text-primary t"
+    },
+    {
+      "name": "tablet: imagens carregadas",
+      "pass": true,
+      "detail": "11 imgs, 0 quebradas"
+    },
+    {
+      "name": "tablet: sem imagens remotas",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop: sem overflow horizontal",
+      "pass": true,
+      "detail": "scroll=1366 client=1366 DIV.p-space-md bg-surface-container flex ite,DIV.flex items-center gap-2,SPAN.material-symbols-outlined text-primary t"
+    },
+    {
+      "name": "desktop: imagens carregadas",
+      "pass": true,
+      "detail": "11 imgs, 0 quebradas"
+    },
+    {
+      "name": "desktop: sem imagens remotas",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "corpo com bg do design #fcf9f8",
+      "pass": true,
+      "detail": "rgb(252, 249, 248)"
+    },
+    {
+      "name": "h1 com texto fiel",
+      "pass": true,
+      "detail": "SE A VIDA TE DER LIMÕES, PEÇA UMA DUFF!"
+    },
+    {
+      "name": "h1 usa Bricolage Grotesque",
+      "pass": true,
+      "detail": "\"Bricolage Grotesque\", sans-serif"
+    },
+    {
+      "name": "CTA Explorar com bg-primary-container #d92727",
+      "pass": true,
+      "detail": "rgb(217, 39, 39)"
+    },
+    {
+      "name": "splash-effect presente no hero",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "todos os 30 textos-chave do design presentes",
+      "pass": true,
+      "detail": "faltando: "
+    },
+    {
+      "name": "catálogo com 8 imagens de produto",
+      "pass": true,
+      "detail": "8 imgs no grid"
+    },
+    {
+      "name": "toast ao adicionar produto",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "botão do carrinho presente no header",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "drawer abre com título",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "subtotal/taxa/total corretos (11,90 + 8,00 = 19,90)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "inputs de nome/endereço presentes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "links WhatsApp com número placeholder",
+      "pass": true,
+      "detail": "3 links, ex: https://wa.me/5511999999999?text=Ol%C3%A1%20Moe!%20Vim%"
+    },
+    {
+      "name": "prefers-reduced-motion: splash oculto",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

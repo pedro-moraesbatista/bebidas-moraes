@@ -140,3 +140,38 @@ describe('useCart', () => {
     expect(second.result.current.subtotal).toBeCloseTo(23.8)
   })
 })
+
+describe('useCart com localStorage corrompido', () => {
+  const payloadsInvalidos = [
+    ['JSON inválido (parse quebra no catch)', 'garbage'],
+    ['array no lugar do objeto', '[1,2]'],
+    ['quantidade negativa', '{"duff-tributo-350":-2}'],
+    ['quantidade zero', '{"duff-tributo-350":0}'],
+    ['quantidade fracionária', '{"duff-tributo-350":2.5}'],
+    ['quantidade como string', '{"duff-tributo-350":"3"}'],
+    ['quantidade Infinity (1e999)', '{"duff-tributo-350":1e999}'],
+    ['quantidade NaN (JSON inválido)', '{"duff-tributo-350":NaN}'],
+  ] as ReadonlyArray<readonly [string, string]>
+
+  it.each(payloadsInvalidos)('descarta storage com %s e monta com carrinho vazio', (_motivo, raw) => {
+    window.localStorage.setItem(STORAGE_KEY, raw)
+
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    expect(result.current.items).toEqual([])
+    expect(result.current.count).toBe(0)
+    expect(result.current.subtotal).toBe(0)
+    expect(result.current.fee).toBe(0)
+  })
+
+  it('não renderiza itens com id que não existe no catálogo (produto-removido)', () => {
+    window.localStorage.setItem(STORAGE_KEY, '{"produto-removido":5}')
+
+    const { result } = renderHook(() => useCart(), { wrapper })
+
+    expect(result.current.items).toEqual([])
+    expect(result.current.count).toBe(0)
+    expect(result.current.subtotal).toBe(0)
+    expect(result.current.total).toBe(0)
+  })
+})

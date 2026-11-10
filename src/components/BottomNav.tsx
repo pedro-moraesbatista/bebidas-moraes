@@ -19,7 +19,7 @@ export default function BottomNav() {
   const { openCart } = useCart()
 
   return (
-    <nav className="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+    <nav aria-label="Navegação principal" className="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
       <div className="flex justify-around items-center h-16 px-space-xs">
         {navItems.map((item) =>
           item.href ? (

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { siteConfig } from '../data/siteConfig'
 import { useCart } from '../lib/cart'
 import { formatBRL } from '../lib/format'
 import { buildOrderMessage, whatsappOrderLink } from '../lib/whatsapp'
@@ -8,15 +9,23 @@ export default function CartDrawer() {
   const [customerName, setCustomerName] = useState('')
   const [customerAddress, setCustomerAddress] = useState('')
   const drawerRef = useRef<HTMLDivElement>(null)
+  const lastActiveElement = useRef<Element | null>(null)
 
   useEffect(() => {
     if (!isOpen) return
+    lastActiveElement.current = document.activeElement
+    document.body.style.overflow = 'hidden'
     drawerRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeCart()
     }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = ''
+      const element = lastActiveElement.current
+      if (element instanceof HTMLElement && document.contains(element)) element.focus()
+    }
   }, [isOpen, closeCart])
 
   const dispatchWhatsApp = () => {
@@ -28,13 +37,13 @@ export default function CartDrawer() {
       fee,
       total,
     })
-    window.open(whatsappOrderLink(message), '_blank')
+    window.open(whatsappOrderLink(message), '_blank', 'noopener,noreferrer')
   }
 
   return (
     <>
       <div
-        className={`fixed inset-0 bg-inverse-surface/60 z-50 backdrop-blur-xs transition-opacity duration-300 ${isOpen ? '' : 'hidden'}`}
+        className={`fixed inset-0 bg-inverse-surface/60 z-[55] backdrop-blur-xs transition-opacity duration-300 ${isOpen ? '' : 'hidden'}`}
         onClick={closeCart}
       ></div>
       <div
@@ -44,7 +53,7 @@ export default function CartDrawer() {
         aria-label="Carrinho de compras devBeer"
         tabIndex={-1}
         inert={!isOpen}
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface z-50 shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface z-[60] shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -94,11 +103,7 @@ export default function CartDrawer() {
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-12 h-12 rounded bg-surface-container-high shrink-0 overflow-hidden flex items-center justify-center">
-                      {item.product.img ? (
-                        <img alt={item.product.name} className="w-full h-full object-cover" src={item.product.img} />
-                      ) : (
-                        <span aria-hidden="true" className="material-symbols-outlined text-[22px] text-primary">sports_bar</span>
-                      )}
+                      <img alt={item.product.name} className="w-full h-full object-cover" src={item.product.img} />
                     </div>
                     <div className="flex flex-col min-w-0">
                       <span className="font-label-md text-label-md text-on-surface truncate">{item.product.name}</span>
@@ -145,8 +150,10 @@ export default function CartDrawer() {
                   Nome de quem vai brindar
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container-highest"
+                  autoComplete="name"
+                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container-highest"
                   id="cart-customer-name"
+                  maxLength={120}
                   placeholder="Ex: Homer J. Simpson"
                   type="text"
                   value={customerName}
@@ -156,8 +163,10 @@ export default function CartDrawer() {
                   Endereço de Entrega
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container-highest"
+                  autoComplete="street-address"
+                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container-highest"
                   id="cart-customer-address"
+                  maxLength={120}
                   placeholder="Ex: Rua Evergreen Terrace, 742"
                   type="text"
                   value={customerAddress}
@@ -172,7 +181,7 @@ export default function CartDrawer() {
                 </div>
                 <div className="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
                   <span>Taxa de Entrega Springfield</span>
-                  <span>{fee === 0 ? 'GRÁTIS (Acima R$80)' : formatBRL(fee)}</span>
+                  <span>{fee === 0 ? `GRÁTIS (Acima R$${siteConfig.delivery.freeAbove})` : formatBRL(fee)}</span>
                 </div>
                 <div className="flex justify-between items-center text-on-surface font-headline-sm text-headline-sm pt-1">
                   <span>Total Geral</span>

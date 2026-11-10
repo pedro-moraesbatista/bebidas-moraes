@@ -1,6 +1,8 @@
 import { siteConfig } from '../data/siteConfig'
 import { useCart } from '../lib/cart'
 
+const copyrightYear = new Date().getFullYear()
+
 export default function Footer() {
   const { showToast } = useCart()
 
@@ -82,7 +84,7 @@ export default function Footer() {
       </div>
 
       <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-on-surface-variant">
-        <span className="font-label-sm text-label-sm">© 2025 {siteConfig.brand.name} {siteConfig.brand.tagline} — Todos os direitos reservados.</span>
+        <span className="font-label-sm text-label-sm">© {copyrightYear} {siteConfig.brand.name} {siteConfig.brand.tagline} — Todos os direitos reservados.</span>
         <span className="font-label-sm text-label-sm">Inspirado na cultura pop cervejeira.</span>
       </div>
     </footer>

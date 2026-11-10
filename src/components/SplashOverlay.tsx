@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { siteConfig } from '../data/siteConfig'
+import { prefersReducedMotion } from '../lib/reduced-motion'
 
 interface SplashOverlayProps {
   open: boolean
@@ -9,14 +10,6 @@ interface SplashOverlayProps {
 const AUTO_CLOSE_MS = 2300
 const PROGRESS_START_DELAY_MS = 50
 const CLOSE_ANIMATION_MS = 700
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
 
 export default function SplashOverlay({ open, onClose }: SplashOverlayProps) {
   const [reducedMotion] = useState(prefersReducedMotion)

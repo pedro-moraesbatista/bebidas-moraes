@@ -11,15 +11,21 @@ export default function ComboHighlight() {
       <div className="relative w-full rounded-xl overflow-hidden bg-surface-container shadow-md p-space-md flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase font-bold">DESTAQUE DO MOE</span>
+            <span className="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase font-bold">{comboDuffCraft.highlightLabel}</span>
             <span className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">-{discountPercent}% OFF</span>
           </div>
           <span className="font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-tertiary"></span> RESTAM 7 CRATES
+            <span className="w-2 h-2 rounded-full bg-tertiary"></span> {comboDuffCraft.stockNote}
           </span>
         </div>
         <div className="relative w-full h-44 rounded-lg overflow-hidden bg-surface-container-high">
-          <img alt={comboDuffCraft.alt} className="w-full h-full object-cover" src={comboDuffCraft.img} />
+          <img
+            alt={comboDuffCraft.alt}
+            className="w-full h-full object-cover"
+            decoding="async"
+            fetchPriority="high"
+            src={comboDuffCraft.img}
+          />
           <div className="absolute bottom-2 left-2 px-2 py-1 rounded bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm backdrop-blur-sm">
             Crate Madeira + 6 Latas Sortidas + Petisco
           </div>

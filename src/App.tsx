@@ -6,7 +6,7 @@ import CombosSection from './components/CombosSection'
 import ComboHighlight from './components/ComboHighlight'
 import DeliverySection from './components/DeliverySection'
 import Footer from './components/Footer'
-import Header from './components/Header'
+import Header, { SideMenu } from './components/Header'
 import Hero from './components/Hero'
 import SplashOverlay from './components/SplashOverlay'
 import Storytelling from './components/Storytelling'
@@ -16,20 +16,44 @@ import { CartProvider, useCart } from './lib/cart'
 export default function App() {
   const [splashOpen, setSplashOpen] = useState(true)
   const [splashSession, setSplashSession] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const closeSplash = useCallback(() => setSplashOpen(false), [])
   const replaySplash = useCallback(() => {
     setSplashSession((session) => session + 1)
     setSplashOpen(true)
   }, [])
+  const openMenu = useCallback(() => setMenuOpen(true), [])
+  const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   return (
     <CartProvider>
       <SplashOverlay key={splashSession} open={splashOpen} onClose={closeSplash} />
-      <Header />
+      <AppShell menuOpen={menuOpen} onOpenMenu={openMenu} onReplay={replaySplash} />
+      <SideMenu open={menuOpen} onClose={closeMenu} />
+      <CartDrawer />
+      <WhatsAppFab />
+      <BottomNav />
+      <CartToast />
+    </CartProvider>
+  )
+}
+
+interface AppShellProps {
+  menuOpen: boolean
+  onOpenMenu: () => void
+  onReplay: () => void
+}
+
+function AppShell({ menuOpen, onOpenMenu, onReplay }: AppShellProps) {
+  const { isOpen: cartOpen } = useCart()
+
+  return (
+    <div id="app-shell" inert={cartOpen || menuOpen}>
+      <Header onOpenMenu={onOpenMenu} />
       <main className="flex flex-col relative w-full pt-20 pb-28 bg-surface min-h-screen">
         <div className="flex flex-col w-full relative overflow-x-hidden">
-          <Hero onReplay={replaySplash} />
+          <Hero onReplay={onReplay} />
           <ComboHighlight />
           <Storytelling />
           <Catalog />
@@ -38,11 +62,7 @@ export default function App() {
         </div>
       </main>
       <Footer />
-      <CartDrawer />
-      <WhatsAppFab />
-      <BottomNav />
-      <CartToast />
-    </CartProvider>
+    </div>
   )
 }
 
@@ -57,7 +77,7 @@ function CartToast() {
       }`}
     >
       <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-secondary-container">check_circle</span>
-      <span>{toast || 'Bebida colocada no gelo!'}</span>
+      <span>{toast}</span>
     </div>
   )
 }
