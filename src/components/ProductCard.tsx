@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
           {product.coldChip && (
             <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 text-on-surface font-label-sm text-label-sm flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px] text-tertiary">ac_unit</span> {product.coldChip}
+              <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-tertiary">ac_unit</span> {product.coldChip}
             </span>
           )}
         </div>
@@ -65,7 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="py-2 px-3.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 active:scale-95 transition-transform shadow-xs"
           onClick={() => add(product)}
         >
-          <span className="material-symbols-outlined text-[18px]">add</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add</span>
           <span>Adicionar</span>
         </button>
       </div>

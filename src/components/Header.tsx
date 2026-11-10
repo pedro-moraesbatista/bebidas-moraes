@@ -34,7 +34,7 @@ export default function Header() {
               className="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface active:scale-95 transition-transform"
               onClick={() => setMenuOpen(true)}
             >
-              <span className="material-symbols-outlined text-[24px]">menu</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[24px]">menu</span>
             </button>
             <div className="flex items-center gap-2">
               <img alt="devBeer Logo" className="h-8 w-auto object-contain" src="/logo.jpg" />
@@ -46,7 +46,7 @@ export default function Header() {
           </div>
           <div className="flex items-center gap-space-xs">
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-              <span className="material-symbols-outlined text-[16px] animate-pulse">bolt</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px] animate-pulse">bolt</span>
               <span className="font-label-sm text-label-sm">{siteConfig.delivery.etaLabel}</span>
             </div>
             <button
@@ -55,7 +55,7 @@ export default function Header() {
               className="relative w-11 h-11 flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface active:scale-95 transition-transform"
               onClick={toggleCart}
             >
-              <span className="material-symbols-outlined text-[22px]">sports_bar</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[22px]">sports_bar</span>
               {count > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm flex items-center justify-center shadow-sm">
                   {count}
@@ -68,13 +68,13 @@ export default function Header() {
               className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
               onClick={() => showToast('Área do cliente em breve!')}
             >
-              <span className="material-symbols-outlined text-on-primary text-[18px]">person</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-on-primary text-[18px]">person</span>
             </button>
           </div>
         </div>
         <div className="px-margin pb-2 flex items-center justify-between sm:hidden">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">
-            <span className="material-symbols-outlined text-[14px] text-secondary">moped</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-secondary">moped</span>
             <span className="font-label-sm text-label-sm">
               Entrega em Springfield: <strong>{siteConfig.delivery.etaLabel}</strong>
             </span>
@@ -112,7 +112,7 @@ export default function Header() {
             className="w-10 h-10 rounded-full bg-surface-container-high hover:bg-surface-variant flex items-center justify-center text-on-surface active:scale-95 transition-transform"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
         <nav className="flex flex-col p-space-sm">
@@ -123,7 +123,7 @@ export default function Header() {
               className="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface hover:bg-surface-container transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="material-symbols-outlined text-[20px] text-primary">{link.icon}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[20px] text-primary">{link.icon}</span>
               <span className="font-label-md text-label-md">{link.label}</span>
             </a>
           ))}

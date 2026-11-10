@@ -70,7 +70,7 @@ export default function SplashOverlay({ open, onClose }: SplashOverlayProps) {
       {/* Skip Splash Button (Top Bar) */}
       <div className="relative z-20 w-full flex items-center justify-between pt-safe">
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest/10 backdrop-blur-md border border-white/10 text-white/90">
-          <span className="material-symbols-outlined text-[16px] text-secondary-container animate-pulse">local_bar</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-secondary-container animate-pulse">local_bar</span>
           <span className="font-label-sm text-label-sm tracking-wider uppercase">{siteConfig.brand.subtitle}</span>
         </div>
         <button
@@ -79,7 +79,7 @@ export default function SplashOverlay({ open, onClose }: SplashOverlayProps) {
           onClick={onClose}
         >
           <span>Pular</span>
-          <span className="material-symbols-outlined text-[16px]">fast_forward</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px]">fast_forward</span>
         </button>
       </div>
 

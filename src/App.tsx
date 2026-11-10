@@ -56,7 +56,7 @@ function CartToast() {
         toast ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
       }`}
     >
-      <span className="material-symbols-outlined text-[18px] text-secondary-container">check_circle</span>
+      <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-secondary-container">check_circle</span>
       <span>{toast || 'Bebida colocada no gelo!'}</span>
     </div>
   )

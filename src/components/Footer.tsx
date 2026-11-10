@@ -28,7 +28,7 @@ export default function Footer() {
     <footer className="mt-8 pt-8 pb-12 px-margin bg-surface-container-lowest text-on-surface flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-[32px]">sports_bar</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-primary text-[32px]">sports_bar</span>
           <div className="flex flex-col">
             <span className="font-headline-md text-headline-md text-primary leading-none">{siteConfig.brand.name}</span>
             <span className="font-label-sm text-label-sm text-on-surface-variant">Depósito Springfield de Bebidas LTDA</span>
@@ -41,7 +41,7 @@ export default function Footer() {
             className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface"
             onClick={shareSite}
           >
-            <span className="material-symbols-outlined text-[20px]">share</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">share</span>
           </button>
           <button
             type="button"
@@ -49,14 +49,14 @@ export default function Footer() {
             className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface"
             onClick={() => showToast('Obrigado pelo amor! ❤️')}
           >
-            <span className="material-symbols-outlined text-[20px]">favorite</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">favorite</span>
           </button>
           <a
             aria-label="Ver opções de entrega"
             className="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface"
             href="#entrega"
           >
-            <span className="material-symbols-outlined text-[20px]">location_on</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">location_on</span>
           </a>
         </div>
       </div>

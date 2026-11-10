@@ -23,7 +23,7 @@ export default function Hero({ onReplay }: HeroProps) {
       <div className="relative z-10 w-full max-w-md mx-auto flex flex-col items-center text-center">
         {/* Vintage Springfield Badge */}
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-on-primary shadow-sm transform -rotate-1 active:rotate-0 transition-transform">
-          <span className="material-symbols-outlined text-[16px] animate-spin" style={{ animationDuration: '8s' }}>stars</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] animate-spin" style={{ animationDuration: '8s' }}>stars</span>
           <span className="font-label-sm text-label-sm uppercase tracking-wider">O Sabor Lendário de Springfield</span>
         </div>
 
@@ -85,7 +85,7 @@ export default function Hero({ onReplay }: HeroProps) {
           className="mb-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest hover:bg-surface-variant text-on-surface border border-outline-variant/60 shadow-xs active:scale-95 transition-all text-xs font-label-md"
           onClick={onReplay}
         >
-          <span className="material-symbols-outlined text-[16px] text-primary">replay</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">replay</span>
           <span>🍻 Rever Brinde de Abertura</span>
         </button>
 
@@ -106,7 +106,7 @@ export default function Hero({ onReplay }: HeroProps) {
             className="flex-1 py-3 px-4 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all"
             href="#catalogo"
           >
-            <span className="material-symbols-outlined text-[20px]">sports_bar</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">sports_bar</span>
             <span>Explorar Bebidas</span>
           </a>
           <a
@@ -115,14 +115,14 @@ export default function Hero({ onReplay }: HeroProps) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="material-symbols-outlined text-[20px] text-tertiary">chat</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px] text-tertiary">chat</span>
             <span>Pedir no WhatsApp</span>
           </a>
         </div>
 
         {/* Responsible drinking warning */}
         <div className="mt-4 flex items-center justify-center gap-1.5 text-on-surface-variant/80">
-          <span className="material-symbols-outlined text-[16px] text-error">warning</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-error">warning</span>
           <span className="font-label-sm text-label-sm">{siteConfig.legal.plus18}</span>
         </div>
       </div>

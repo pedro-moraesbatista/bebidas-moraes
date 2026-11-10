@@ -31,7 +31,7 @@ export default function CombosSection() {
               className="w-full py-2.5 rounded-lg bg-surface-container-highest hover:bg-surface-variant text-on-surface font-label-md text-label-md flex items-center justify-center gap-1 active:scale-95 transition-all"
               onClick={() => add(combo)}
             >
-              <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
               <span>Adicionar Combo</span>
             </button>
           </div>

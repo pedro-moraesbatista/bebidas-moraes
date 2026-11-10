@@ -10,7 +10,7 @@ export default function WhatsAppFab() {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <span className="material-symbols-outlined text-[22px]">chat</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-[22px]">chat</span>
         <span className="font-label-md text-label-md hidden xs:inline">Zap do Moe</span>
       </a>
     </aside>

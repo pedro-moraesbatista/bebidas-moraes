@@ -51,7 +51,7 @@ export default function CartDrawer() {
         {/* Header Drawer */}
         <div className="p-space-md bg-surface-container flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-[24px]">sports_bar</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[24px]">sports_bar</span>
             <h3 className="font-headline-sm text-headline-sm text-on-surface">Seu Engradado</h3>
             <span className="px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-bold">{count}</span>
           </div>
@@ -61,7 +61,7 @@ export default function CartDrawer() {
             className="w-10 h-10 rounded-full bg-surface-container-high hover:bg-surface-variant flex items-center justify-center text-on-surface active:scale-95 transition-transform"
             onClick={closeCart}
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
@@ -69,7 +69,7 @@ export default function CartDrawer() {
           /* Empty State */
           <div className="flex-1 flex flex-col items-center justify-center p-space-lg text-center gap-3">
             <div className="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
-              <span className="material-symbols-outlined text-[40px]">liquor</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[40px]">liquor</span>
             </div>
             <h4 className="font-headline-sm text-headline-sm text-on-surface">O engradado está vazio!</h4>
             <p className="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
@@ -97,7 +97,7 @@ export default function CartDrawer() {
                       {item.product.img ? (
                         <img alt={item.product.name} className="w-full h-full object-cover" src={item.product.img} />
                       ) : (
-                        <span className="material-symbols-outlined text-[22px] text-primary">sports_bar</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-[22px] text-primary">sports_bar</span>
                       )}
                     </div>
                     <div className="flex flex-col min-w-0">
@@ -114,7 +114,7 @@ export default function CartDrawer() {
                       className="w-7 h-7 rounded bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center active:scale-95"
                       onClick={() => changeQty(item.product.id, -1)}
                     >
-                      <span className="material-symbols-outlined text-[16px]">remove</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">remove</span>
                     </button>
                     <span className="font-label-sm text-label-sm font-bold w-5 text-center">{item.qty}</span>
                     <button
@@ -123,7 +123,7 @@ export default function CartDrawer() {
                       className="w-7 h-7 rounded bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center active:scale-95"
                       onClick={() => changeQty(item.product.id, 1)}
                     >
-                      <span className="material-symbols-outlined text-[16px]">add</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">add</span>
                     </button>
                     <button
                       type="button"
@@ -131,7 +131,7 @@ export default function CartDrawer() {
                       className="w-7 h-7 rounded text-error hover:bg-error-container/40 flex items-center justify-center active:scale-95 ml-1"
                       onClick={() => remove(item.product.id)}
                     >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[18px]">delete</span>
                     </button>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export default function CartDrawer() {
                 className="w-full py-3.5 px-4 rounded-xl bg-tertiary hover:bg-tertiary-container text-on-tertiary font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all"
                 onClick={dispatchWhatsApp}
               >
-                <span className="material-symbols-outlined text-[22px]">send</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[22px]">send</span>
                 <span>Enviar Pedido no WhatsApp</span>
               </button>
               <span className="text-center font-label-sm text-label-sm text-on-surface-variant">

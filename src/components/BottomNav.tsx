@@ -28,7 +28,7 @@ export default function BottomNav() {
               className="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors"
               href={item.href}
             >
-              <span className="material-symbols-outlined text-[24px]">{item.icon}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[24px]">{item.icon}</span>
               <span className="font-label-sm text-label-sm">{item.label}</span>
             </a>
           ) : (
@@ -38,7 +38,7 @@ export default function BottomNav() {
               className="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors"
               onClick={openCart}
             >
-              <span className="material-symbols-outlined text-[24px]">{item.icon}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[24px]">{item.icon}</span>
               <span className="font-label-sm text-label-sm">{item.label}</span>
             </button>
           ),

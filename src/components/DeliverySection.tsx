@@ -8,7 +8,7 @@ export default function DeliverySection() {
       <div className="w-full rounded-2xl p-space-lg bg-surface-container text-on-surface shadow-md flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[28px]">sports_bar</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[28px]">sports_bar</span>
           </div>
           <div className="flex flex-col">
             <h3 className="font-headline-sm text-headline-sm text-on-surface">MATOU A SEDE? CHAMA A DEVBEER!</h3>
@@ -17,21 +17,21 @@ export default function DeliverySection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-2">
           <div className="flex items-start gap-2.5 p-space-sm rounded-lg bg-surface-container-low">
-            <span className="material-symbols-outlined text-primary text-[20px]">explore</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">explore</span>
             <div className="flex flex-col">
               <span className="font-label-md text-label-md">Raio de Cobertura</span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">{siteConfig.delivery.radius}</span>
             </div>
           </div>
           <div className="flex items-start gap-2.5 p-space-sm rounded-lg bg-surface-container-low">
-            <span className="material-symbols-outlined text-secondary text-[20px]">schedule</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-secondary text-[20px]">schedule</span>
             <div className="flex flex-col">
               <span className="font-label-md text-label-md">Horário de Plantão</span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">{siteConfig.delivery.schedule}</span>
             </div>
           </div>
           <div className="flex items-start gap-2.5 p-space-sm rounded-lg bg-surface-container-low">
-            <span className="material-symbols-outlined text-tertiary text-[20px]">timer</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-tertiary text-[20px]">timer</span>
             <div className="flex flex-col">
               <span className="font-label-md text-label-md">Tempo Estimado</span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">
@@ -40,7 +40,7 @@ export default function DeliverySection() {
             </div>
           </div>
           <div className="flex items-start gap-2.5 p-space-sm rounded-lg bg-surface-container-low">
-            <span className="material-symbols-outlined text-primary text-[20px]">savings</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">savings</span>
             <div className="flex flex-col">
               <span className="font-label-md text-label-md">Frete Grátis</span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">
@@ -53,7 +53,7 @@ export default function DeliverySection() {
         {/* Quick WhatsApp Contact Box */}
         <div className="mt-2 p-space-md rounded-xl bg-secondary-container text-on-secondary-container flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[24px]">call</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[24px]">call</span>
             <div>
               <span className="font-label-sm text-label-sm uppercase block font-bold">Central de Pedidos WhatsApp</span>
               <span className="font-headline-sm text-headline-sm">{siteConfig.whatsapp.display}</span>
@@ -65,7 +65,7 @@ export default function DeliverySection() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="material-symbols-outlined text-[18px]">chat</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[18px]">chat</span>
             <span>Chamar Bartender</span>
           </a>
         </div>

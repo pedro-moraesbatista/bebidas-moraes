@@ -38,7 +38,7 @@ export default function ComboHighlight() {
             className="py-2.5 px-4 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 active:scale-95 shadow-sm transition-transform"
             onClick={() => add(comboDuffCraft)}
           >
-            <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
             <span>Adicionar Combo</span>
           </button>
         </div>

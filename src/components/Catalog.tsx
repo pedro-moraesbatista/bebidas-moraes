@@ -55,7 +55,7 @@ export default function Catalog() {
 
       {/* Nota de aviso Legal Estilizada */}
       <div className="p-space-sm rounded-lg bg-surface-container-low text-on-surface-variant flex items-start gap-2 mt-2">
-        <span className="material-symbols-outlined text-primary text-[20px] shrink-0">info</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px] shrink-0">info</span>
         <p className="font-body-sm text-body-sm">
           <strong>Nota de Tributo:</strong> {siteConfig.legal.tribute}
         </p>
