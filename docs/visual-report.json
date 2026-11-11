@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:4173",
+  "base": "https://bebidas-moraes.vercel.app",
   "total": 27,
   "failed": 0,
   "checks": [
