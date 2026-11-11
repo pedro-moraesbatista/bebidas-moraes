@@ -26,14 +26,6 @@ async function newPage(viewport, reducedMotion = 'no-preference') {
   return { context, page }
 }
 
-async function skipSplash(page) {
-  const splash = page.locator('#splash-screen')
-  if ((await splash.count()) === 0) return
-  const skip = page.locator('#splash-screen button', { hasText: 'Pular' })
-  await skip.click({ timeout: 1500 }).catch(() => {})
-  await splash.waitFor({ state: 'detached', timeout: 6000 }).catch(() => {})
-}
-
 async function gotoPage(page) {
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
   await page.waitForSelector('main h1', { timeout: 15000 })
@@ -66,26 +58,10 @@ async function scrollThrough(page) {
   })
 }
 
-// ---------- Splash animation capture (mobile) ----------
-{
-  const { context, page } = await newPage(VIEWPORTS[0])
-  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
-  await page.waitForSelector('#splash-screen', { timeout: 10000 })
-  await page.waitForTimeout(950)
-  const splashVisible = await page.locator('#splash-screen').isVisible()
-  await page.screenshot({ path: `${OUT_DIR}/splash-animation.png` })
-  record('splash visível na carga', splashVisible)
-  await skipSplash(page)
-  const gone = await page.locator('#splash-screen').count() === 0
-  record('splash fecha via botão Pular', gone)
-  await context.close()
-}
-
 // ---------- Per-viewport: screenshots + checks ----------
 for (const viewport of VIEWPORTS) {
   const { context, page } = await newPage(viewport)
   await gotoPage(page)
-  await skipSplash(page)
   await page.waitForTimeout(600)
   await scrollThrough(page)
   await waitForImages(page, { timeout: 4000 })
@@ -128,7 +104,6 @@ for (const viewport of VIEWPORTS) {
 {
   const { context, page } = await newPage(VIEWPORTS[2])
   await gotoPage(page)
-  await skipSplash(page)
 
   const identity = await page.evaluate(() => {
     const get = (sel) => document.querySelector(sel)
@@ -139,68 +114,67 @@ for (const viewport of VIEWPORTS) {
       h1Text: get('h1')?.innerText.replace(/\s+/g, ' ').trim(),
       h1Font: fontOf(get('h1')),
       ctaExploreBg: bgOf(get('#hero a[href="#catalogo"]')),
-      clinkBg: bgOf(get('#splash-effect')),
-      pillsCount: document.querySelectorAll('.category-btn, [data-testid]').length,
-      catalogBadges: document.querySelectorAll('#catalogo img').length,
-      footerText: get('footer')?.innerText.slice(0, 80),
+      whatsappCtaBg: bgOf(get('#hero a[href*="wa.me"]')),
     }
   })
-  record('corpo com bg do design #fcf9f8', identity.bodyBg === 'rgb(252, 249, 248)', identity.bodyBg)
-  record('h1 com texto fiel', identity.h1Text === 'SE A VIDA TE DER LIMÕES, PEÇA UMA DUFF!', identity.h1Text)
-  record('h1 usa Bricolage Grotesque', (identity.h1Font || '').includes('Bricolage Grotesque'), identity.h1Font)
-  record(
-    'CTA Explorar com bg-primary-container #d92727',
-    identity.ctaExploreBg === 'rgb(217, 39, 39)',
-    identity.ctaExploreBg,
-  )
-  record('splash-effect presente no hero', Boolean(identity.clinkBg))
+  record('corpo com bg surface #FFFFFF', identity.bodyBg === 'rgb(255, 255, 255)', identity.bodyBg)
+  record('h1 com copy da Bebidas Moraes', (identity.h1Text || '').includes('AS MELHORES BEBIDAS'), identity.h1Text)
+  record('h1 usa Hanken Grotesk', (identity.h1Font || '').includes('Hanken Grotesk'), identity.h1Font)
+  record('CTA Explorar catálogo com bg-primary #A71930', identity.ctaExploreBg === 'rgb(167, 25, 48)', identity.ctaExploreBg)
+  record('CTA WhatsApp com bg-whatsapp #1DA851', identity.whatsappCtaBg === 'rgb(29, 168, 81)', identity.whatsappCtaBg)
 
   const textFidelity = await page.evaluate(() => {
     const text = document.body.innerText
     const required = [
-      'O Sabor Lendário de Springfield',
-      'CLINK!',
-      'Rever Brinde de Abertura',
-      'Explorar Bebidas',
-      'Pedir no WhatsApp',
+      'Bebidas Moraes',
+      'Seu depósito de bebidas, agora online.',
+      'Catálogo digital com pedido pelo WhatsApp',
+      'AS MELHORES BEBIDAS',
+      'A UM CLIQUE DE VOCÊ',
+      'Encontre suas marcas favoritas, confira os preços e monte seu pedido sem complicação.',
+      'Explorar catálogo',
+      'Fazer pedido pelo WhatsApp',
+      'Entrega no mesmo dia',
+      'Compra segura +18',
+      '8h às 22h',
+      'PROMOÇÃO DA SEMANA',
+      'Combo Churrasco',
+      'Adicionar combo',
+      'Peça em 3 passos',
+      'Nosso catálogo',
+      '24 produtos',
+      'Todas',
+      'Cervejas',
+      'Destilados',
+      'Refrigerantes',
+      'Energéticos',
+      'Águas',
+      'Combos que valem a pena',
+      'Receba no mesmo dia',
+      'Pedidos pelo WhatsApp',
+      '(83) 99846-1353',
+      'Chamar no WhatsApp',
       'Venda proibida para menores de 18 anos',
-      'DESTAQUE DO MOE',
-      'RESTAM 7 CRATES',
-      'Combo Duff & Craft Experience',
-      'Cardápio do Depósito',
-      '8 ITENS DISPONÍVEIS',
-      'Duff Beer Tributo Lata 350ml',
-      'Duff Lite Springfield 355ml',
-      'Duff Dry Extra Malte 500ml',
-      'Fudd Beer Dark Ale Taverna',
-      'Chopp Dev IPA Growler 1L',
-      'Flaming Moe Cocktail Mix',
-      'Buzz Cola Lata Vintage 350ml',
-      'Red Homer Energy 473ml',
-      'Cervejas & Latas',
-      'Artesanais & Growlers',
-      'Refris & Não Alcoólicos',
-      'Nota de Tributo',
-      'Mais Economia',
-      'Combos da Rodada',
-      'Combo Happy Hour da Taverna',
-      'Combo Churrasco Springfield',
-      'MATOU A SEDE? CHAMA A DEVBEER!',
-      'Central de Pedidos WhatsApp',
-      'Seu Engradado',
+      'Quer um catálogo como este para sua empresa?',
+      'Uma solução desenvolvida pela Moraes Tecnologia.',
+      'Preços demonstrativos',
     ]
-    return required.filter((r) => !text.toLowerCase().includes(r.toLowerCase()))
-  })
-  record('todos os 30 textos-chave do design presentes', textFidelity.length === 0, `faltando: ${textFidelity.join(' | ')}`)
-
-  const catalog = await page.evaluate(() => {
-    const grid = document.querySelector('#product-grid') ?? document.querySelector('#catalogo')
-    return {
-      products: grid ? grid.querySelectorAll('img').length : 0,
-      pills: document.querySelectorAll('button').length,
+    const missing = required.filter((r) => !text.toLowerCase().includes(r.toLowerCase()))
+    if (document.querySelector('#catalogo input')?.getAttribute('placeholder') !== 'Buscar produto ou marca') {
+      missing.push('placeholder "Buscar produto ou marca"')
     }
+    return missing
   })
-  record('catálogo com 8 imagens de produto', catalog.products === 8, `${catalog.products} imgs no grid`)
+  record('todos os textos-chave da Bebidas Moraes presentes', textFidelity.length === 0, `faltando: ${textFidelity.join(' | ')}`)
+
+  const catalog = await page.evaluate(() => ({
+    products: document.querySelectorAll('#catalogo img').length,
+    adicionarButtons: [...document.querySelectorAll('#catalogo button')].filter((button) =>
+      button.textContent.trim() === 'Adicionar',
+    ).length,
+  }))
+  record('catálogo com 24 imagens de produto', catalog.products === 24, `${catalog.products} imgs no grid`)
+  record('catálogo com 24 botões Adicionar', catalog.adicionarButtons === 24, `${catalog.adicionarButtons} botões`)
 
   await context.close()
 }
@@ -209,18 +183,16 @@ for (const viewport of VIEWPORTS) {
 {
   const { context, page } = await newPage(VIEWPORTS[0])
   await gotoPage(page)
-  await skipSplash(page)
 
   const addFirst = page.locator('#catalogo button', { hasText: 'Adicionar' }).first()
   await addFirst.scrollIntoViewIfNeeded()
   await addFirst.click()
   await page.waitForTimeout(400)
-  const toastText = await page.evaluate(() => document.body.innerText.includes('Adicionado:'))
-  record('toast ao adicionar produto', toastText)
+  const toastText = await page.evaluate(() => document.body.innerText.includes('Adicionado: Heineken'))
+  record('toast ao adicionar produto em destaque', toastText)
 
   await page.evaluate(() => localStorage.clear())
   await gotoPage(page)
-  await skipSplash(page)
 
   await addFirst.scrollIntoViewIfNeeded()
   await addFirst.click()
@@ -234,23 +206,23 @@ for (const viewport of VIEWPORTS) {
   const drawer = await page.evaluate(() => {
     const text = document.body.innerText
     return {
-      hasTitle: text.includes('Seu Engradado'),
-      subtotal: text.includes('R$ 11,90'),
+      hasTitle: text.includes('Seu pedido'),
+      subtotal: text.includes('R$ 6,19'),
       fee: text.includes('R$ 8,00'),
-      total: text.includes('R$ 19,90'),
+      total: text.includes('R$ 14,19'),
       hasInputs: Boolean(document.querySelector('#cart-customer-name, input[type="text"]')),
-      hasNameInput: text.toLowerCase().includes('nome de quem vai brindar'),
+      hasNameInput: text.toLowerCase().includes('seu nome'),
       hasAddressInput: text.toLowerCase().includes('endereço de entrega'),
     }
   })
-  record('drawer abre com título', drawer.hasTitle)
-  record('subtotal/taxa/total corretos (11,90 + 8,00 = 19,90)', drawer.subtotal && drawer.fee && drawer.total)
+  record('drawer abre com título Seu pedido', drawer.hasTitle)
+  record('subtotal/taxa/total corretos (6,19 + 8,00 = 14,19)', drawer.subtotal && drawer.fee && drawer.total)
   record('inputs de nome/endereço presentes', drawer.hasInputs && drawer.hasNameInput && drawer.hasAddressInput)
 
   const waLinks = await page.evaluate(() => [...document.querySelectorAll('a[href*="wa.me"]')].map((a) => a.href))
   record(
-    'links WhatsApp com número placeholder',
-    waLinks.length > 0 && waLinks.every((h) => h.includes('wa.me/5511999999999?')),
+    'links WhatsApp com número do cliente',
+    waLinks.length > 0 && waLinks.every((h) => h.includes('wa.me/5583998461353?')),
     `${waLinks.length} links, ex: ${waLinks[0]?.slice(0, 55)}`,
   )
   await context.close()
@@ -261,14 +233,13 @@ for (const viewport of VIEWPORTS) {
   const { context, page } = await newPage(VIEWPORTS[0], 'reduce')
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
   await page.waitForSelector('main h1', { timeout: 15000 })
-  await page.waitForTimeout(1200)
-  const splashHidden = await page.evaluate(() => {
-    const splash = document.querySelector('#splash-screen')
-    if (!splash) return true
-    const style = getComputedStyle(splash)
-    return style.display === 'none' || !splash.checkVisibility()
+  await page.waitForTimeout(400)
+  const floatDisabled = await page.evaluate(() => {
+    const floatEl = document.querySelector('.animate-float')
+    if (!floatEl) return false
+    return parseFloat(getComputedStyle(floatEl).animationDuration) < 0.1
   })
-  record('prefers-reduced-motion: splash oculto', splashHidden)
+  record('prefers-reduced-motion: animação de flutuação desativada', floatDisabled)
   await context.close()
 }
 

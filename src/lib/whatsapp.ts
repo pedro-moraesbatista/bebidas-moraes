@@ -15,27 +15,30 @@ export interface OrderMessageInput {
   total: number
 }
 
-const DEFAULT_CUSTOMER_NAME = 'Cliente Springfield'
-const DEFAULT_CUSTOMER_ADDRESS = 'Retirada no Balcão ou a Combinar'
+const DEFAULT_CUSTOMER_NAME = 'Cliente'
+const DEFAULT_CUSTOMER_ADDRESS = 'Retirada no local'
 
 export function buildOrderMessage({ customer, items, subtotal, fee, total }: OrderMessageInput): string {
   const name = customer.name.trim() || DEFAULT_CUSTOMER_NAME
   const address = customer.address.trim() || DEFAULT_CUSTOMER_ADDRESS
 
   const lines = [
-    '🍺 *NOVO PEDIDO - devBeer Springfield Pub*',
+    `*NOVO PEDIDO — ${siteConfig.brand.name}*`,
     '',
-    `👤 *Cliente:* ${name}`,
-    `📍 *Endereço:* ${address}`,
+    `*Cliente:* ${name}`,
+    `*Endereço:* ${address}`,
     '',
-    '📋 *ITENS NO ENGRADADO:*',
-    ...items.map((item) => `• ${item.qty}x ${item.product.name} — ${formatBRL(item.product.price * item.qty)}`),
+    '*ITENS DO PEDIDO:*',
+    ...items.map(
+      (item) =>
+        `• ${item.qty}x ${item.product.name} — ${formatBRL(item.product.price * item.qty)} (${formatBRL(item.product.price)}/un)`,
+    ),
     '',
-    `💵 *Subtotal:* ${formatBRL(subtotal)}`,
-    `🛵 *Taxa de Entrega:* ${fee === 0 ? 'GRÁTIS' : formatBRL(fee)}`,
-    `⭐ *TOTAL GERAL:* ${formatBRL(total)}`,
+    `*Subtotal:* ${formatBRL(subtotal)}`,
+    `*Taxa de entrega:* ${fee === 0 ? 'GRÁTIS' : formatBRL(fee)}`,
+    `*TOTAL:* ${formatBRL(total)}`,
     '',
-    '_Favor confirmar se o chope está trincando de gelado!_',
+    '_Pedido enviado pelo catálogo digital. Aguardo confirmação. Obrigado!_',
   ]
 
   return lines.join('\n')

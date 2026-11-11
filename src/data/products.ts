@@ -1,19 +1,6 @@
-export type CategoryId = 'todos' | 'cervejas' | 'artesanais' | 'combos' | 'sem-alcool'
+export type ProductCategory = 'cervejas' | 'destilados' | 'refrigerantes' | 'energeticos' | 'aguas'
 
-export type ProductCategory = Exclude<CategoryId, 'todos'>
-
-export type BadgeTone =
-  | 'primary'
-  | 'primary-container'
-  | 'secondary-container'
-  | 'tertiary'
-  | 'surface-variant'
-  | 'tertiary-fixed'
-
-export interface Badge {
-  text: string
-  tone: BadgeTone
-}
+export type CategoryId = ProductCategory | 'combos'
 
 export interface Category {
   id: CategoryId
@@ -23,201 +10,358 @@ export interface Category {
 export interface Product {
   id: string
   name: string
+  brand: string
+  volume: string
   price: number
   priceFrom?: number
-  img: string
-  alt: string
-  description: string
   category: ProductCategory
-  unitLabel: string
-  metaLabel?: string
-  specs?: { abv: string; ibu: string }
-  metaNote?: { text: string; tone: 'tertiary' | 'plain' }
-  badge?: Badge
-  coldChip?: string
-  stockNote?: string
-  highlightLabel?: string
+  img: string
+  description: string
+  featured?: boolean
 }
 
-export interface Combo extends Product {
-  category: 'combos'
-  tag: Badge
+export interface Combo {
+  id: string
+  name: string
+  description: string
+  price: number
+  priceFrom: number
+  items: string[]
+  featured?: boolean
 }
 
-export const badgeToneClasses: Record<BadgeTone, string> = {
-  primary: 'bg-primary text-on-primary',
-  'primary-container': 'bg-primary-container text-on-primary',
-  'secondary-container': 'bg-secondary-container text-on-secondary-container',
-  tertiary: 'bg-tertiary text-on-tertiary',
-  'surface-variant': 'bg-surface-variant text-on-surface',
-  'tertiary-fixed': 'bg-tertiary-fixed text-on-tertiary-fixed',
+export interface CartProduct {
+  id: string
+  name: string
+  price: number
+  img: string
+  volume?: string
 }
 
 export const categories: Category[] = [
-  { id: 'todos', label: 'Todas' },
-  { id: 'cervejas', label: 'Cervejas & Latas' },
-  { id: 'artesanais', label: 'Artesanais & Growlers' },
+  { id: 'cervejas', label: 'Cervejas' },
+  { id: 'destilados', label: 'Destilados' },
+  { id: 'refrigerantes', label: 'Refrigerantes' },
+  { id: 'energeticos', label: 'Energéticos' },
+  { id: 'aguas', label: 'Águas' },
   { id: 'combos', label: 'Combos' },
-  { id: 'sem-alcool', label: 'Refris & Não Alcoólicos' },
 ]
 
 export const products: Product[] = [
   {
-    id: 'duff-tributo-350',
-    name: 'Duff Beer Tributo Lata 350ml',
-    price: 11.9,
-    img: '/assets/duff-can.webp',
-    alt: 'Duff Beer Tributo Lata 350ml super gelada sobre balcão de taverna',
-    description: 'A lendária lata vermelha de Springfield. Aroma leve de malte, alta refrescância e colarinho denso.',
+    id: 'brahma-duplo-malte-350',
+    name: 'Brahma Duplo Malte',
+    brand: 'Brahma',
+    volume: 'Lata 350ml',
+    price: 3.57,
+    priceFrom: 4.19,
     category: 'cervejas',
-    unitLabel: 'Unidade',
-    metaLabel: 'Lager Pilsen • 350ml',
-    specs: { abv: '4.8%', ibu: '14' },
-    badge: { text: 'TRIBUTO SPRINGFIELD', tone: 'primary' },
-    coldChip: '-2°C',
+    img: '/assets/brahma-duplo-malte-350.webp',
+    description: 'Puro malte de corpo leve e sabor equilibrado, gelado no ponto para qualquer hora.',
   },
   {
-    id: 'duff-lite-355',
-    name: 'Duff Lite Springfield 355ml',
-    price: 10.9,
-    img: '/assets/duff-lite.webp',
-    alt: 'Close up shot of a Duff Lite beer bottle with icy condensation in Springfield Moe Tavern counter pop art cartoon style warm lighting',
-    description:
-      'Versão extra suave para quem planeja maratonar sem peso na consciência. Ultra leve e carbonatada.',
+    id: 'skol-pilsen-350',
+    name: 'Skol Pilsen',
+    brand: 'Skol',
+    volume: 'Lata 350ml',
+    price: 3.89,
     category: 'cervejas',
-    unitLabel: 'Unidade',
-    metaLabel: 'Lite Lager • 355ml',
-    specs: { abv: '3.9%', ibu: '10' },
-    badge: { text: 'BAIXA CALORIA', tone: 'secondary-container' },
-    coldChip: 'TRINCANDO',
+    img: '/assets/skol-pilsen-350.webp',
+    description: 'A cerveja que desce redondo — refrescância clássica do dia a dia.',
   },
   {
-    id: 'duff-dry-500',
-    name: 'Duff Dry Extra Malte 500ml',
-    price: 14.5,
-    img: '/assets/duff-dry.webp',
-    alt: 'A tall sleek matte black can of Duff Dry Beer with silver accents on a wooden bar top with ambient tavern neon lights',
-    description:
-      'Final seco na boca, corpo pronunciado e notas tostadas sutis. O preferado dos frequentadores fiéis.',
+    id: 'antarctica-subzero-350',
+    name: 'Antarctica Sub Zero',
+    brand: 'Antarctica',
+    volume: 'Lata 350ml',
+    price: 3.89,
     category: 'cervejas',
-    unitLabel: 'Unidade',
-    metaLabel: 'Dry Malt • Latão 500ml',
-    specs: { abv: '5.4%', ibu: '18' },
-    badge: { text: 'EXTRA MALTE', tone: 'surface-variant' },
+    img: '/assets/antarctica-subzero-350.webp',
+    description: 'Extra lager de sabor marcante, feita para trincar de gelada.',
   },
   {
-    id: 'fudd-dark-500',
-    name: 'Fudd Beer Dark Ale Taverna',
-    price: 16.9,
-    img: '/assets/fudd-dark.webp',
-    alt: 'A vintage brown glass craft beer bottle labeled Fudd Beer with creamy foam drips in a dimly lit tavern with rustic wood grain',
-    description:
-      'A cerveja de Shelbyville que surpreendeu até o Moe. Escura, encorpada com notas de café torrado e toffee.',
-    category: 'artesanais',
-    unitLabel: 'Unidade',
-    metaLabel: 'Dark Ale • 500ml',
-    specs: { abv: '6.2%', ibu: '32' },
-    badge: { text: 'RIVAL CLÁSSICO', tone: 'primary-container' },
+    id: 'heineken-330',
+    name: 'Heineken',
+    brand: 'Heineken',
+    volume: 'Long Neck 330ml',
+    price: 6.19,
+    priceFrom: 7.29,
+    category: 'cervejas',
+    img: '/assets/heineken-330.webp',
+    description: 'Lager premium holandesa com notas de malte equilibradas — clássico mundial.',
+    featured: true,
   },
   {
-    id: 'growler-ipa-1l',
-    name: 'Chopp Dev IPA Growler 1L',
-    price: 28,
-    img: '/assets/growler-ipa.webp',
-    alt: 'Amber glass Growler filled with fresh craft India Pale Ale with hop cones and dense foam top on Springfield tavern counter',
-    description:
-      'Envasado contra-pressão minutos antes da entrega. Carga massiva de lúpulos cítricos americanos.',
-    category: 'artesanais',
-    unitLabel: 'Growler 1000ml',
-    metaLabel: 'Growler Pet • 1 Litro',
-    specs: { abv: '6.8%', ibu: '58' },
-    badge: { text: 'DIRETO DA TORNEIRA', tone: 'tertiary' },
+    id: 'amstel-350',
+    name: 'Amstel Lager',
+    brand: 'Amstel',
+    volume: 'Lata 350ml',
+    price: 3.59,
+    priceFrom: 4.29,
+    category: 'cervejas',
+    img: '/assets/amstel-350.webp',
+    description: 'Lager suave e dourada, ótima companhia para o dia a dia.',
   },
   {
-    id: 'flaming-moe-mix',
-    name: 'Flaming Moe Cocktail Mix',
-    price: 22,
-    img: '/assets/flaming-moe.webp',
-    alt: 'A purple glowing mocktail mixer bottle titled Flaming Moe with purple smoke and neon pub glow behind it',
-    description:
-      'Base xaroposa cítrica e mirtilo para montar o lendário drink. Acompanha instruções do bartender.',
-    category: 'sem-alcool',
-    unitLabel: 'Garrafa 500ml',
-    metaLabel: 'Xarope Mixer • 500ml',
-    metaNote: { text: 'SEM ÁLCOOL', tone: 'tertiary' },
-    badge: { text: 'RECEITA SECRETA', tone: 'secondary-container' },
+    id: 'stella-artois-350',
+    name: 'Stella Artois Puro Malte',
+    brand: 'Stella Artois',
+    volume: 'Lata 350ml',
+    price: 5.09,
+    category: 'cervejas',
+    img: '/assets/stella-artois-350.webp',
+    description: 'Puro malte belga com final seco e aroma delicado.',
   },
   {
-    id: 'buzz-cola-350',
-    name: 'Buzz Cola Lata Vintage 350ml',
-    price: 7.5,
-    img: '/assets/buzz-cola.webp',
-    alt: 'A vintage retro pop art soda can of Buzz Cola with red and white geometric patterns and ice cubes around it',
-    description:
-      'O clássico refrigerante de cola açucarado e ultra gás para os motoristas da rodada e amantes de nostalgia.',
-    category: 'sem-alcool',
-    unitLabel: 'Lata 350ml',
-    metaLabel: 'Refrigerante • 350ml',
-    metaNote: { text: '2x Cafeína', tone: 'plain' },
-    badge: { text: 'VINTAGE POP', tone: 'surface-variant' },
+    id: 'original-350',
+    name: 'Original Pilsen',
+    brand: 'Original',
+    volume: 'Lata 350ml',
+    price: 4.19,
+    priceFrom: 4.99,
+    category: 'cervejas',
+    img: '/assets/original-350.webp',
+    description: 'Pilsen brasileira de corpo médio e amargor na medida certa.',
   },
   {
-    id: 'red-homer-473',
-    name: 'Red Homer Energy 473ml',
-    price: 12,
-    img: '/assets/red-homer.webp',
-    alt: 'A vivid yellow and neon orange energetic drink can with lightning bolts titled Red Homer Energy on tavern counter',
-    description:
-      'Para segurar o plantão ou estender a festa até o amanhecer com dose cavalar de disposição e sabor tropical.',
-    category: 'sem-alcool',
-    unitLabel: 'Lata 473ml',
-    metaLabel: 'Energético • 473ml',
-    metaNote: { text: 'Taurina + Ginseng', tone: 'plain' },
-    badge: { text: 'BOOST PURA ENERGIA', tone: 'secondary-container' },
+    id: 'budweiser-330',
+    name: 'Budweiser American Lager',
+    brand: 'Budweiser',
+    volume: 'Long Neck 330ml',
+    price: 5.09,
+    priceFrom: 5.79,
+    category: 'cervejas',
+    img: '/assets/budweiser-330.webp',
+    description: 'American Lager leve e crocante, com final limpo e refrescante.',
+  },
+  {
+    id: 'corona-extra-330',
+    name: 'Corona Extra',
+    brand: 'Corona',
+    volume: 'Long Neck 330ml',
+    price: 6.65,
+    priceFrom: 7.79,
+    category: 'cervejas',
+    img: '/assets/corona-extra-330.webp',
+    description: 'A mexicana mais famosa do mundo — leve, refrescante e com limão.',
+  },
+  {
+    id: 'spaten-350',
+    name: 'Spaten Puro Malte',
+    brand: 'Spaten',
+    volume: 'Lata 350ml',
+    price: 4.15,
+    priceFrom: 4.89,
+    category: 'cervejas',
+    img: '/assets/spaten-350.webp',
+    description: 'Puro malte alemão com a tradição de Munique em cada gole.',
+  },
+  {
+    id: 'smirnoff-998',
+    name: 'Vodka Smirnoff',
+    brand: 'Smirnoff',
+    volume: '998ml',
+    price: 30.9,
+    priceFrom: 48.28,
+    category: 'destilados',
+    img: '/assets/smirnoff-998.webp',
+    description: 'Vodka tripla destilada, suave para caipiroskas e drinks.',
+  },
+  {
+    id: 'absolut-750',
+    name: 'Vodka Absolut',
+    brand: 'Absolut',
+    volume: '750ml',
+    price: 119.99,
+    category: 'destilados',
+    img: '/assets/absolut-750.webp',
+    description: 'Vodka sueca premium de pureza reconhecida mundialmente.',
+  },
+  {
+    id: 'johnnie-walker-red-1000',
+    name: 'Whisky Johnnie Walker Red Label',
+    brand: 'Johnnie Walker',
+    volume: '1L',
+    price: 84.9,
+    priceFrom: 129.62,
+    category: 'destilados',
+    img: '/assets/johnnie-walker-red-1000.webp',
+    description: 'Whisky blended escocês marcante — base perfeita para drinks.',
+    featured: true,
+  },
+  {
+    id: 'ballantines-finest-1000',
+    name: "Whisky Ballantine's Finest",
+    brand: "Ballantine's",
+    volume: '1L',
+    price: 109.9,
+    category: 'destilados',
+    img: '/assets/ballantines-finest-1000.webp',
+    description: 'Blended suave e equilibrado, com notas de mel e baunilha.',
+  },
+  {
+    id: 'coca-cola-2l',
+    name: 'Coca-Cola Original',
+    brand: 'Coca-Cola',
+    volume: 'Garrafa 2L',
+    price: 11.99,
+    category: 'refrigerantes',
+    img: '/assets/coca-cola-2l.webp',
+    description: 'O refrigerante original, na medida certa para dividir.',
+  },
+  {
+    id: 'coca-cola-350',
+    name: 'Coca-Cola Original',
+    brand: 'Coca-Cola',
+    volume: 'Lata 350ml',
+    price: 3.99,
+    priceFrom: 4.39,
+    category: 'refrigerantes',
+    img: '/assets/coca-cola-350.webp',
+    description: 'Sabor original em lata gelada, refrescância individual.',
+  },
+  {
+    id: 'pepsi-2l',
+    name: 'Pepsi',
+    brand: 'Pepsi',
+    volume: 'Garrafa 2L',
+    price: 10.39,
+    category: 'refrigerantes',
+    img: '/assets/pepsi-2l.webp',
+    description: 'Cola com toque cítrico e mais gás para quem gosta.',
+  },
+  {
+    id: 'guarana-antarctica-2l',
+    name: 'Guaraná Antarctica',
+    brand: 'Antarctica',
+    volume: 'Garrafa 2L',
+    price: 11.29,
+    category: 'refrigerantes',
+    img: '/assets/guarana-antarctica-2l.webp',
+    description: 'O gosto do Brasil — guaraná autêntico e bem gelado.',
+  },
+  {
+    id: 'fanta-laranja-2l',
+    name: 'Fanta Laranja',
+    brand: 'Fanta',
+    volume: 'Garrafa 2L',
+    price: 8.79,
+    priceFrom: 10.37,
+    category: 'refrigerantes',
+    img: '/assets/fanta-laranja-2l.webp',
+    description: 'Sabor de laranja intenso que agrada toda a família.',
+  },
+  {
+    id: 'sprite-2l',
+    name: 'Sprite',
+    brand: 'Sprite',
+    volume: 'Garrafa 2L',
+    price: 8.79,
+    priceFrom: 9.59,
+    category: 'refrigerantes',
+    img: '/assets/sprite-2l.webp',
+    description: 'Limão sem cafeína, transparente e estalando de gás.',
+  },
+  {
+    id: 'red-bull-250',
+    name: 'Red Bull Energy Drink',
+    brand: 'Red Bull',
+    volume: 'Lata 250ml',
+    price: 9.99,
+    priceFrom: 10.99,
+    category: 'energeticos',
+    img: '/assets/red-bull-250.webp',
+    description: 'O energético que dá asas — energia na medida certa.',
+  },
+  {
+    id: 'monster-473',
+    name: 'Monster Energy Green',
+    brand: 'Monster',
+    volume: 'Lata 473ml',
+    price: 8.59,
+    priceFrom: 10.09,
+    category: 'energeticos',
+    img: '/assets/monster-473.webp',
+    description: 'O clássico verde em lata grande, dose cheia de energia.',
+  },
+  {
+    id: 'crystal-com-gas-500',
+    name: 'Água Mineral Com Gás Crystal',
+    brand: 'Crystal',
+    volume: 'Garrafa 500ml',
+    price: 2.99,
+    category: 'aguas',
+    img: '/assets/crystal-com-gas-500.webp',
+    description: 'Água mineral com gás natural, refrescância leve.',
+  },
+  {
+    id: 'crystal-sem-gas-500',
+    name: 'Água Mineral Sem Gás Crystal',
+    brand: 'Crystal',
+    volume: 'Garrafa 500ml',
+    price: 2.79,
+    category: 'aguas',
+    img: '/assets/crystal-sem-gas-500.webp',
+    description: 'Água mineral pura, hidratação para o dia todo.',
   },
 ]
-
-export const comboDuffCraft: Product = {
-  id: 'combo-duff-craft',
-  name: 'Combo Duff & Craft Experience',
-  price: 79.9,
-  priceFrom: 98,
-  img: '/assets/combo-crate.webp',
-  alt: 'Combo Duff e Cervejas Artesanais em Caixa de Madeira Springfield',
-  description:
-    'A clássica experiência da Taverna entregue na sua porta: engradado rústico com 6 latas artesanais premium e amendoins selecionados.',
-  category: 'combos',
-  unitLabel: 'Combo',
-  badge: { text: 'DESTAQUE DO MOE', tone: 'primary' },
-  highlightLabel: 'DESTAQUE DO MOE',
-  stockNote: 'RESTAM 7 CRATES',
-}
 
 export const combos: Combo[] = [
   {
-    id: 'combo-hh',
-    name: 'Combo Happy Hour da Taverna',
+    id: 'combo-churrasco',
+    name: 'Combo Churrasco',
+    description: '6 Brahma Duplo Malte + 6 Skol + Coca-Cola 2L + Guaraná Antarctica 2L',
     price: 59.9,
-    img: '/assets/duff-can.webp',
-    alt: 'Combo Happy Hour da Taverna',
-    description:
-      'Pack com 6 Latas Duff Beer 350ml + 1 Porção Generosa do Amendoim Temperado Especial do Moe.',
-    category: 'combos',
-    unitLabel: 'Combo',
-    tag: { text: 'HAPPY HOUR', tone: 'secondary-container' },
+    priceFrom: 68.04,
+    items: ['brahma-duplo-malte-350', 'skol-pilsen-350', 'coca-cola-2l', 'guarana-antarctica-2l'],
+    featured: true,
   },
   {
-    id: 'combo-churrasco',
-    name: 'Combo Churrasco Springfield',
-    price: 119,
-    img: '/assets/combo-crate.webp',
-    alt: 'Combo Churrasco Springfield',
-    description:
-      'Fardo com 12 cervejas Duff geladas + Saco de Gelo Filtrado 5kg + 1 Carvão Ecológico 3kg.',
-    category: 'combos',
-    unitLabel: 'Combo',
-    tag: { text: 'CHURRASCO COMPLETO', tone: 'tertiary-fixed' },
+    id: 'combo-fim-de-semana',
+    name: 'Combo Fim de Semana',
+    description: '6 Heineken + 6 Coca-Cola lata + 2 Monster Green',
+    price: 69.9,
+    priceFrom: 78.26,
+    items: ['heineken-330', 'coca-cola-350', 'monster-473'],
+  },
+  {
+    id: 'combo-cerveja-energetico',
+    name: 'Combo Cerveja + Energético',
+    description: '6 Skol + 2 Red Bull',
+    price: 39.9,
+    priceFrom: 43.32,
+    items: ['skol-pilsen-350', 'red-bull-250'],
+  },
+  {
+    id: 'combo-confraternizacao',
+    name: 'Combo Confraternização',
+    description: 'Johnnie Walker Red Label 1L + 4 Coca-Cola lata + Fanta 2L + Sprite 2L',
+    price: 109.9,
+    priceFrom: 118.44,
+    items: ['johnnie-walker-red-1000', 'coca-cola-350', 'fanta-laranja-2l', 'sprite-2l'],
   },
 ]
 
-export const catalogItems: Product[] = [...products, comboDuffCraft, ...combos]
+const productsById = new Map(products.map((product) => [product.id, product]))
+
+export function productById(id: string): Product | undefined {
+  return productsById.get(id)
+}
+
+function comboItemImage(combo: Combo): string {
+  const image = combo.items
+    .map((id) => productsById.get(id))
+    .find((product) => product !== undefined)?.img
+  if (!image) throw new Error(`combo ${combo.id} referencia apenas produtos inexistentes`)
+  return image
+}
+
+export const catalogItems: CartProduct[] = [
+  ...products,
+  ...combos.map((combo) => ({
+    id: combo.id,
+    name: combo.name,
+    price: combo.price,
+    img: comboItemImage(combo),
+  })),
+]

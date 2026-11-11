@@ -60,7 +60,7 @@ describe('Fechamento de modais com ESC', () => {
 
     await user.click(screen.getByRole('button', { name: 'Abrir carrinho' }))
 
-    const drawer = screen.getByRole('dialog', { hidden: true, name: 'Carrinho de compras devBeer' })
+    const drawer = screen.getByRole('dialog', { hidden: true, name: 'Seu pedido' })
     expect(drawer).toHaveFocus()
     expect(document.activeElement).toBe(drawer)
   })
@@ -69,7 +69,7 @@ describe('Fechamento de modais com ESC', () => {
     const onClose = vi.fn()
     const { rerender } = render(<SideMenu open={false} onClose={onClose} />)
 
-    const menu = screen.getByRole('dialog', { hidden: true, name: 'Menu do Bar' })
+    const menu = screen.getByRole('dialog', { hidden: true, name: 'Menu' })
     expect(menu.className).toContain('-translate-x-full')
     expect(modalOverlay().className).toContain('hidden')
 

@@ -1,18 +1,8 @@
 {
-  "base": "https://devbeer-landing.vercel.app",
-  "total": 25,
+  "base": "http://localhost:4173",
+  "total": 24,
   "failed": 0,
   "checks": [
-    {
-      "name": "splash visível na carga",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "splash fecha via botão Pular",
-      "pass": true,
-      "detail": ""
-    },
     {
       "name": "mobile: sem overflow horizontal",
       "pass": true,
@@ -21,7 +11,7 @@
     {
       "name": "mobile: imagens carregadas",
       "pass": true,
-      "detail": "11 imgs, 0 quebradas"
+      "detail": "43 imgs, 0 quebradas"
     },
     {
       "name": "mobile: sem imagens remotas",
@@ -31,12 +21,12 @@
     {
       "name": "tablet: sem overflow horizontal",
       "pass": true,
-      "detail": "scroll=768 client=768 DIV.p-space-md bg-surface-container flex ite,DIV.flex items-center gap-2,SPAN.material-symbols-outlined text-primary t"
+      "detail": "scroll=768 client=768 DIV.p-space-md bg-surface-alt border-b borde,DIV.flex items-center gap-2,SPAN.text-primary flex"
     },
     {
       "name": "tablet: imagens carregadas",
       "pass": true,
-      "detail": "11 imgs, 0 quebradas"
+      "detail": "43 imgs, 0 quebradas"
     },
     {
       "name": "tablet: sem imagens remotas",
@@ -46,12 +36,12 @@
     {
       "name": "desktop: sem overflow horizontal",
       "pass": true,
-      "detail": "scroll=1366 client=1366 DIV.p-space-md bg-surface-container flex ite,DIV.flex items-center gap-2,SPAN.material-symbols-outlined text-primary t"
+      "detail": "scroll=1366 client=1366 DIV.p-space-md bg-surface-alt border-b borde,DIV.flex items-center gap-2,SPAN.text-primary flex"
     },
     {
       "name": "desktop: imagens carregadas",
       "pass": true,
-      "detail": "11 imgs, 0 quebradas"
+      "detail": "43 imgs, 0 quebradas"
     },
     {
       "name": "desktop: sem imagens remotas",
@@ -59,42 +49,47 @@
       "detail": ""
     },
     {
-      "name": "corpo com bg do design #fcf9f8",
+      "name": "corpo com bg surface #FFFFFF",
       "pass": true,
-      "detail": "rgb(252, 249, 248)"
+      "detail": "rgb(255, 255, 255)"
     },
     {
-      "name": "h1 com texto fiel",
+      "name": "h1 com copy da Bebidas Moraes",
       "pass": true,
-      "detail": "SE A VIDA TE DER LIMÕES, PEÇA UMA DUFF!"
+      "detail": "AS MELHORES BEBIDAS, A UM CLIQUE DE VOCÊ."
     },
     {
-      "name": "h1 usa Bricolage Grotesque",
+      "name": "h1 usa Hanken Grotesk",
       "pass": true,
-      "detail": "\"Bricolage Grotesque\", sans-serif"
+      "detail": "\"Hanken Grotesk\", sans-serif"
     },
     {
-      "name": "CTA Explorar com bg-primary-container #d92727",
+      "name": "CTA Explorar catálogo com bg-primary #A71930",
       "pass": true,
-      "detail": "rgb(217, 39, 39)"
+      "detail": "rgb(167, 25, 48)"
     },
     {
-      "name": "splash-effect presente no hero",
+      "name": "CTA WhatsApp com bg-whatsapp #1DA851",
       "pass": true,
-      "detail": ""
+      "detail": "rgb(29, 168, 81)"
     },
     {
-      "name": "todos os 30 textos-chave do design presentes",
+      "name": "todos os textos-chave da Bebidas Moraes presentes",
       "pass": true,
       "detail": "faltando: "
     },
     {
-      "name": "catálogo com 8 imagens de produto",
+      "name": "catálogo com 24 imagens de produto",
       "pass": true,
-      "detail": "8 imgs no grid"
+      "detail": "24 imgs no grid"
     },
     {
-      "name": "toast ao adicionar produto",
+      "name": "catálogo com 24 botões Adicionar",
+      "pass": true,
+      "detail": "24 botões"
+    },
+    {
+      "name": "toast ao adicionar produto em destaque",
       "pass": true,
       "detail": ""
     },
@@ -104,12 +99,12 @@
       "detail": ""
     },
     {
-      "name": "drawer abre com título",
+      "name": "drawer abre com título Seu pedido",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "subtotal/taxa/total corretos (11,90 + 8,00 = 19,90)",
+      "name": "subtotal/taxa/total corretos (6,19 + 8,00 = 14,19)",
       "pass": true,
       "detail": ""
     },
@@ -119,12 +114,12 @@
       "detail": ""
     },
     {
-      "name": "links WhatsApp com número placeholder",
+      "name": "links WhatsApp com número do cliente",
       "pass": true,
-      "detail": "3 links, ex: https://wa.me/5511999999999?text=Ol%C3%A1%20Moe!%20Vim%"
+      "detail": "6 links, ex: https://wa.me/5583998461353?text=Ol%C3%A1!%20Quero%20fa"
     },
     {
-      "name": "prefers-reduced-motion: splash oculto",
+      "name": "prefers-reduced-motion: animação de flutuação desativada",
       "pass": true,
       "detail": ""
     }

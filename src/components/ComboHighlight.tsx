@@ -1,51 +1,43 @@
-import { comboDuffCraft } from '../data/products'
+import Icon from './Icon'
+import ComboCollage from './ComboCollage'
+import { combos, type Combo } from '../data/products'
 import { useCart } from '../lib/cart'
 import { formatBRL } from '../lib/format'
 
 export default function ComboHighlight() {
   const { add } = useCart()
-  const discountPercent = Math.round((1 - comboDuffCraft.price / (comboDuffCraft.priceFrom ?? comboDuffCraft.price)) * 100)
+  const featuredCombo: Combo | undefined = combos.find((combo) => combo.featured) ?? combos[0]
+
+  if (!featuredCombo) return null
 
   return (
-    <section className="px-margin my-4" id="combo-destaque">
-      <div className="relative w-full rounded-xl overflow-hidden bg-surface-container shadow-md p-space-md flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase font-bold">{comboDuffCraft.highlightLabel}</span>
-            <span className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">-{discountPercent}% OFF</span>
-          </div>
-          <span className="font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-tertiary"></span> {comboDuffCraft.stockNote}
+    <section className="px-margin my-6" id="combo-destaque">
+      <div className="w-full rounded-xl bg-surface border border-border shadow-sm p-space-md md:p-space-lg grid md:grid-cols-2 gap-6 items-center">
+        <ComboCollage
+          className="aspect-square bg-surface-alt p-4 rounded-lg"
+          itemIds={featuredCombo.items}
+        />
+        <div className="flex flex-col gap-3">
+          <span className="self-start px-3 py-1 rounded-full bg-accent text-white font-label-sm text-label-sm uppercase font-bold tracking-wider">
+            Promoção da semana
           </span>
-        </div>
-        <div className="relative w-full h-44 rounded-lg overflow-hidden bg-surface-container-high">
-          <img
-            alt={comboDuffCraft.alt}
-            className="w-full h-full object-cover"
-            decoding="async"
-            fetchPriority="high"
-            src={comboDuffCraft.img}
-          />
-          <div className="absolute bottom-2 left-2 px-2 py-1 rounded bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm backdrop-blur-sm">
-            Crate Madeira + 6 Latas Sortidas + Petisco
-          </div>
-        </div>
-        <div className="flex flex-col gap-1">
-          <h2 className="font-headline-md text-headline-md text-on-surface leading-tight">{comboDuffCraft.name}</h2>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">{comboDuffCraft.description}</p>
-        </div>
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm text-on-surface-variant line-through">De {formatBRL(comboDuffCraft.priceFrom ?? comboDuffCraft.price)}</span>
-            <span className="font-headline-md text-headline-md text-primary font-black">{formatBRL(comboDuffCraft.price)}</span>
+          <h2 className="font-headline-md text-headline-md text-ink leading-tight">{featuredCombo.name}</h2>
+          <p className="font-body-sm text-body-sm text-ink-soft">{featuredCombo.description}</p>
+          <div className="flex items-baseline gap-3 flex-wrap">
+            <span className="font-body-sm text-body-sm text-ink-soft line-through">
+              De {formatBRL(featuredCombo.priceFrom)}
+            </span>
+            <span className="text-headline-md font-extrabold text-primary">
+              {formatBRL(featuredCombo.price)}
+            </span>
           </div>
           <button
             type="button"
-            className="py-2.5 px-4 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 active:scale-95 shadow-sm transition-transform"
-            onClick={() => add(comboDuffCraft)}
+            className="self-start px-5 py-3 rounded-lg bg-primary hover:bg-primary-hover text-white font-label-lg text-label-lg flex items-center gap-2 shadow-sm active:scale-95 transition-all"
+            onClick={() => add(featuredCombo)}
           >
-            <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-            <span>Adicionar Combo</span>
+            <Icon name="add" size={20} />
+            <span>Adicionar combo</span>
           </button>
         </div>
       </div>

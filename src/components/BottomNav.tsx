@@ -1,48 +1,63 @@
+import Icon, { type IconName } from './Icon'
 import { useCart } from '../lib/cart'
+import { whatsappOrderLink } from '../lib/whatsapp'
 
 interface BottomNavItem {
   id: string
   label: string
-  icon: string
+  icon: IconName
   href?: string
+  external?: boolean
 }
 
 const navItems: BottomNavItem[] = [
-  { id: 'taverna', label: 'Taverna', icon: 'liquor', href: '#hero' },
-  { id: 'chopes', label: 'Chopes', icon: 'local_drink', href: '#catalogo' },
-  { id: 'combos', label: 'Combos', icon: 'local_fire_department', href: '#combos' },
-  { id: 'pedidos', label: 'Pedidos', icon: 'receipt_long' },
-  { id: 'fidelidade', label: 'Fidelidade', icon: 'stars', href: '#storytelling' },
+  { id: 'inicio', label: 'Início', icon: 'bottle', href: '#hero' },
+  { id: 'busca', label: 'Busca', icon: 'search', href: '#catalogo' },
+  { id: 'combos', label: 'Combos', icon: 'bottle', href: '#combos' },
+  { id: 'pedido', label: 'Pedido', icon: 'cart' },
+  {
+    id: 'whatsapp',
+    label: 'WhatsApp',
+    icon: 'whatsapp',
+    href: whatsappOrderLink('Olá! Quero fazer um pedido na Bebidas Moraes!'),
+    external: true,
+  },
 ]
 
 export default function BottomNav() {
   const { openCart } = useCart()
 
   return (
-    <nav aria-label="Navegação principal" className="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]">
+    <nav
+      aria-label="Navegação principal"
+      className="fixed bottom-0 w-full z-50 pb-safe bg-surface/95 backdrop-blur-xl border-t border-border shadow-[0_-2px_12px_rgba(0,0,0,0.04)]"
+    >
       <div className="flex justify-around items-center h-16 px-space-xs">
-        {navItems.map((item) =>
-          item.href ? (
+        {navItems.map((item) => {
+          const className =
+            'flex flex-col items-center justify-center gap-1 w-14 h-12 text-ink-soft hover:text-ink transition-colors'
+
+          if (!item.href) {
+            return (
+              <button key={item.id} type="button" className={className} onClick={openCart}>
+                <Icon name={item.icon} size={24} />
+                <span className="font-label-sm text-label-sm">{item.label}</span>
+              </button>
+            )
+          }
+
+          return (
             <a
               key={item.id}
-              className="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors"
+              className={className}
               href={item.href}
+              {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
-              <span aria-hidden="true" className="material-symbols-outlined text-[24px]">{item.icon}</span>
+              <Icon name={item.icon} size={24} />
               <span className="font-label-sm text-label-sm">{item.label}</span>
             </a>
-          ) : (
-            <button
-              key={item.id}
-              type="button"
-              className="flex flex-col items-center justify-center gap-1 w-14 h-12 text-on-surface-variant hover:text-on-surface transition-colors"
-              onClick={openCart}
-            >
-              <span aria-hidden="true" className="material-symbols-outlined text-[24px]">{item.icon}</span>
-              <span className="font-label-sm text-label-sm">{item.label}</span>
-            </button>
-          ),
-        )}
+          )
+        })}
       </div>
     </nav>
   )

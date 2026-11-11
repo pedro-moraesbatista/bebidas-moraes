@@ -8,20 +8,25 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { catalogItems, type Product } from '../data/products'
+import {
+  catalogItems,
+  type CartProduct,
+  type Combo,
+  type Product,
+} from '../data/products'
 import { siteConfig } from '../data/siteConfig'
 
-const STORAGE_KEY = 'devbeer-cart-v1'
+const STORAGE_KEY = 'bebidas-moraes-cart-v1'
 const TOAST_VISIBLE_MS = 2200
 
 export interface CartItem {
-  product: Product
+  product: CartProduct
   qty: number
 }
 
 export interface CartContextValue {
   items: CartItem[]
-  add: (product: Product) => void
+  add: (item: Product | Combo) => void
   remove: (id: string) => void
   changeQty: (id: string, delta: number) => void
   subtotal: number
@@ -81,9 +86,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const add = useCallback(
-    (product: Product) => {
-      setQuantities((prev) => ({ ...prev, [product.id]: (prev[product.id] ?? 0) + 1 }))
-      showToast(`Adicionado: ${product.name}`)
+    (item: Product | Combo) => {
+      setQuantities((prev) => ({ ...prev, [item.id]: (prev[item.id] ?? 0) + 1 }))
+      showToast(`Adicionado: ${item.name}`)
     },
     [showToast],
   )

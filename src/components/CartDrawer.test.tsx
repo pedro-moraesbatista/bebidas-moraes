@@ -11,7 +11,8 @@ function productById(id: string): Product {
   return product
 }
 
-const duffTributo = productById('duff-tributo-350')
+const brahmaDuploMalte = productById('brahma-duplo-malte-350')
+const johnnieWalker = productById('johnnie-walker-red-1000')
 
 function Controls() {
   const { add, openCart, toggleCart } = useCart()
@@ -23,8 +24,11 @@ function Controls() {
       <button type="button" onClick={toggleCart}>
         alterna-carrinho
       </button>
-      <button type="button" onClick={() => add(duffTributo)}>
-        adiciona-duff
+      <button type="button" onClick={() => add(brahmaDuploMalte)}>
+        adiciona-brahma
+      </button>
+      <button type="button" onClick={() => add(johnnieWalker)}>
+        adiciona-johnnie
       </button>
     </>
   )
@@ -40,7 +44,7 @@ function renderDrawer() {
 }
 
 function drawer(): HTMLElement {
-  return screen.getByRole('dialog', { hidden: true, name: 'Carrinho de compras devBeer' })
+  return screen.getByRole('dialog', { hidden: true, name: 'Seu pedido' })
 }
 
 function overlay(): HTMLElement {
@@ -97,99 +101,104 @@ describe('CartDrawer', () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
 
-    expect(screen.getByText('O engradado está vazio!')).toBeInTheDocument()
-    expect(screen.queryByText('Subtotal bebidas')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Enviar Pedido no WhatsApp$/ })).not.toBeInTheDocument()
+    expect(screen.getByText('Seu carrinho está vazio')).toBeInTheDocument()
+    expect(
+      screen.getByText('Escolha suas bebidas no catálogo e monte seu pedido em minutos.'),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Ver catálogo' })).toBeInTheDocument()
+    expect(screen.queryByText('Subtotal')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /Enviar pedido no WhatsApp$/ }),
+    ).not.toBeInTheDocument()
   })
 
-  it('exibe o item com preço qty × unitário e move a quantidade pelos botões', async () => {
+  it('exibe o item com nome, volume e preço qty × unitário e move a quantidade', async () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
 
-    expect(screen.getByText(duffTributo.name)).toBeInTheDocument()
-    expect(within(itemsList()).getByText('R$ 11,90')).toBeInTheDocument()
+    expect(screen.getByText(brahmaDuploMalte.name)).toBeInTheDocument()
+    expect(screen.getByText('Lata 350ml')).toBeInTheDocument()
+    expect(within(itemsList()).getByText('R$ 3,57')).toBeInTheDocument()
     expect(within(itemsList()).getByText('1')).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: `Aumentar quantidade de ${duffTributo.name}` }))
-    expect(within(itemsList()).getByText('R$ 23,80')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: `Aumentar quantidade de ${brahmaDuploMalte.name}` }))
+    expect(within(itemsList()).getByText('R$ 7,14')).toBeInTheDocument()
     expect(within(itemsList()).getByText('2')).toBeInTheDocument()
-    expect(within(itemsList()).queryByText('R$ 11,90')).not.toBeInTheDocument()
+    expect(within(itemsList()).queryByText('R$ 3,57')).not.toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: `Diminuir quantidade de ${duffTributo.name}` }))
-    expect(within(itemsList()).getByText('R$ 11,90')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: `Diminuir quantidade de ${brahmaDuploMalte.name}` }))
+    expect(within(itemsList()).getByText('R$ 3,57')).toBeInTheDocument()
   })
 
-  it('remove o item pelo botão delete', async () => {
+  it('remove o item pelo botão de lixeira', async () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
 
-    await user.click(screen.getByRole('button', { name: 'Remover item' }))
+    await user.click(screen.getByRole('button', { name: `Remover ${brahmaDuploMalte.name}` }))
 
-    expect(screen.getByText('O engradado está vazio!')).toBeInTheDocument()
-    expect(screen.queryByText(duffTributo.name)).not.toBeInTheDocument()
-    expect(screen.queryByText('Subtotal bebidas')).not.toBeInTheDocument()
+    expect(screen.getByText('Seu carrinho está vazio')).toBeInTheDocument()
+    expect(screen.queryByText(brahmaDuploMalte.name)).not.toBeInTheDocument()
+    expect(screen.queryByText('Subtotal')).not.toBeInTheDocument()
   })
 
   it('diminuir a quantidade em 1 com qty igual a 1 volta ao empty state', async () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
 
-    await user.click(screen.getByRole('button', { name: `Diminuir quantidade de ${duffTributo.name}` }))
+    await user.click(screen.getByRole('button', { name: `Diminuir quantidade de ${brahmaDuploMalte.name}` }))
 
-    expect(screen.getByText('O engradado está vazio!')).toBeInTheDocument()
+    expect(screen.getByText('Seu carrinho está vazio')).toBeInTheDocument()
   })
 
   it('exibe subtotal, taxa e total quando o subtotal fica abaixo de R$ 80', async () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
 
-    expect(summaryValue('Subtotal bebidas')).toBe('R$ 11,90')
-    expect(summaryValue('Taxa de Entrega Springfield')).toBe('R$ 8,00')
-    expect(summaryValue('Total Geral')).toBe('R$ 19,90')
+    expect(summaryValue('Subtotal')).toBe('R$ 3,57')
+    expect(summaryValue('Taxa de entrega')).toBe('R$ 8,00')
+    expect(summaryValue('Total')).toBe('R$ 11,57')
   })
 
   it('exibe GRÁTIS na taxa quando o subtotal atinge R$ 80', async () => {
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    const adicionar = screen.getByRole('button', { name: 'adiciona-duff' })
-    for (let index = 0; index < 7; index += 1) {
-      await user.click(adicionar)
-    }
+    await user.click(screen.getByRole('button', { name: 'adiciona-johnnie' }))
 
-    expect(summaryValue('Subtotal bebidas')).toBe('R$ 83,30')
-    expect(summaryValue('Taxa de Entrega Springfield')).toBe('GRÁTIS (Acima R$80)')
-    expect(summaryValue('Total Geral')).toBe('R$ 83,30')
+    expect(summaryValue('Subtotal')).toBe('R$ 84,90')
+    expect(summaryValue('Taxa de entrega')).toBe('GRÁTIS')
+    expect(summaryValue('Total')).toBe('R$ 84,90')
   })
 
   it('preenche nome e endereço e envia o pedido via window.open', async () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     renderDrawer()
     await user.click(screen.getByRole('button', { name: 'abre-carrinho' }))
-    await user.click(screen.getByRole('button', { name: 'adiciona-duff' }))
+    await user.click(screen.getByRole('button', { name: 'adiciona-brahma' }))
 
-    await user.type(screen.getByLabelText('Nome de quem vai brindar'), 'Homer J. Simpson')
-    await user.type(screen.getByLabelText('Endereço de Entrega'), 'Rua Evergreen Terrace, 742')
+    await user.type(screen.getByLabelText('Seu nome'), 'Maria Souza')
+    await user.type(screen.getByLabelText('Endereço de entrega'), 'Rua das Palmas, 123')
 
-    await user.click(screen.getByRole('button', { name: /Enviar Pedido no WhatsApp$/ }))
+    await user.click(screen.getByRole('button', { name: /Enviar pedido no WhatsApp$/ }))
 
     expect(openSpy).toHaveBeenCalledTimes(1)
     expect(openSpy.mock.calls[0]?.[1]).toBe('_blank')
     const url = String(openSpy.mock.calls[0]?.[0])
-    expect(url.startsWith('https://wa.me/5511999999999?text=')).toBe(true)
+    expect(url.startsWith('https://wa.me/5583998461353?text=')).toBe(true)
 
-    const encodedText = url.slice('https://wa.me/5511999999999?text='.length)
+    const encodedText = url.slice('https://wa.me/5583998461353?text='.length)
     const decoded = decodeURIComponent(encodedText)
-    expect(decoded).toContain('🍺 *NOVO PEDIDO - devBeer Springfield Pub*')
-    expect(decoded).toContain('👤 *Cliente:* Homer J. Simpson')
-    expect(decoded).toContain('📍 *Endereço:* Rua Evergreen Terrace, 742')
-    expect(decoded).toContain('• 1x Duff Beer Tributo Lata 350ml — R$ 11,90')
-    expect(decoded).toContain('💵 *Subtotal:* R$ 11,90')
-    expect(decoded).toContain('🛵 *Taxa de Entrega:* R$ 8,00')
-    expect(decoded).toContain('⭐ *TOTAL GERAL:* R$ 19,90')
+    expect(decoded).toContain('*NOVO PEDIDO — Bebidas Moraes*')
+    expect(decoded).toContain('*Cliente:* Maria Souza')
+    expect(decoded).toContain('*Endereço:* Rua das Palmas, 123')
+    expect(decoded).toContain('• 1x Brahma Duplo Malte — R$ 3,57 (R$ 3,57/un)')
+    expect(decoded).toContain('*Subtotal:* R$ 3,57')
+    expect(decoded).toContain('*Taxa de entrega:* R$ 8,00')
+    expect(decoded).toContain('*TOTAL:* R$ 11,57')
+    expect(decoded).toContain('_Pedido enviado pelo catálogo digital. Aguardo confirmação. Obrigado!_')
   })
 })

@@ -1,58 +1,16 @@
 @import "tailwindcss";
 
-/*
- * Design tokens extraídos do projeto Stitch "devBeer Landing Page"
- * (projects/7945143848793903505, tela 9f17e42475634c0a8c3c5b91707e0e2b).
- * O Stitch é a fonte de verdade visual — não alterar tokens sem aprovação.
- */
 @theme {
-  --color-error: #ba1a1a;
-  --color-on-tertiary-container: #daffde;
-  --color-on-tertiary-fixed-variant: #1e502f;
-  --color-surface-container-high: #eae7e7;
-  --color-outline-variant: #e5bdb9;
-  --color-secondary: #6f5d00;
-  --color-inverse-surface: #303030;
-  --color-error-container: #ffdad6;
-  --color-on-tertiary-fixed: #00210d;
-  --color-tertiary-fixed-dim: #9dd3a8;
-  --color-tertiary: #306240;
-  --color-on-background: #1b1c1c;
-  --color-on-error-container: #93000a;
-  --color-on-surface: #1b1c1c;
-  --color-primary-fixed-dim: #ffb4ab;
-  --color-primary-fixed: #ffdad6;
-  --color-outline: #916f6b;
-  --color-primary-container: #d92727;
-  --color-inverse-primary: #ffb4ab;
-  --color-surface-container: #f0eded;
-  --color-on-tertiary: #ffffff;
-  --color-surface-bright: #fcf9f8;
-  --color-on-secondary: #ffffff;
-  --color-surface-variant: #e4e2e1;
-  --color-surface-dim: #dcd9d9;
-  --color-on-secondary-fixed-variant: #544600;
-  --color-surface: #fcf9f8;
-  --color-secondary-fixed-dim: #e7c400;
-  --color-secondary-fixed: #ffe166;
-  --color-primary: #b40012;
-  --color-on-surface-variant: #5c403c;
-  --color-surface-container-lowest: #ffffff;
-  --color-inverse-on-surface: #f3f0ef;
-  --color-on-primary-fixed: #410002;
-  --color-on-primary-fixed-variant: #93000c;
-  --color-on-primary-container: #fff3f2;
-  --color-on-secondary-fixed: #221b00;
-  --color-tertiary-fixed: #b9f0c3;
-  --color-background: #fcf9f8;
-  --color-tertiary-container: #497b56;
-  --color-on-primary: #ffffff;
-  --color-on-error: #ffffff;
-  --color-surface-tint: #be0c17;
-  --color-surface-container-low: #f6f3f2;
-  --color-on-secondary-container: #705e00;
-  --color-surface-container-highest: #e4e2e1;
-  --color-secondary-container: #fed80c;
+  --color-primary: #A71930;
+  --color-primary-hover: #8F1428;
+  --color-accent: #D62839;
+  --color-ink: #222222;
+  --color-ink-soft: #55565A;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F5F5F5;
+  --color-border: #E9E9E9;
+  --color-whatsapp: #1DA851;
+  --color-whatsapp-hover: #189747;
 
   --spacing-margin: 1rem;
   --spacing-space-md: 1rem;
@@ -64,15 +22,15 @@
   --spacing-gutter-desktop: 1.5rem;
   --spacing-space-xl: 2.5rem;
 
-  --font-headline-lg: "Bricolage Grotesque", sans-serif;
-  --font-headline-lg-mobile: "Bricolage Grotesque", sans-serif;
-  --font-headline-md: "Bricolage Grotesque", sans-serif;
-  --font-headline-sm: "Bricolage Grotesque", sans-serif;
-  --font-display-hero: "Bricolage Grotesque", sans-serif;
-  --font-display-hero-mobile: "Bricolage Grotesque", sans-serif;
-  --font-label-md: "Space Grotesk", sans-serif;
-  --font-label-sm: "Space Grotesk", sans-serif;
-  --font-label-lg: "Space Grotesk", sans-serif;
+  --font-headline-lg: "Hanken Grotesk", sans-serif;
+  --font-headline-lg-mobile: "Hanken Grotesk", sans-serif;
+  --font-headline-md: "Hanken Grotesk", sans-serif;
+  --font-headline-sm: "Hanken Grotesk", sans-serif;
+  --font-display-hero: "Hanken Grotesk", sans-serif;
+  --font-display-hero-mobile: "Hanken Grotesk", sans-serif;
+  --font-label-md: "Hanken Grotesk", sans-serif;
+  --font-label-sm: "Hanken Grotesk", sans-serif;
+  --font-label-lg: "Hanken Grotesk", sans-serif;
   --font-body-md: "Hanken Grotesk", sans-serif;
   --font-body-sm: "Hanken Grotesk", sans-serif;
   --font-body-lg: "Hanken Grotesk", sans-serif;
@@ -163,140 +121,22 @@
   }
 }
 
-/* ===== Animação do brinde dos copos (splash cinematográfico do Stitch) ===== */
-@keyframes bubbleRise {
-  0% {
-    transform: translateY(110vh) scale(0.6);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.8;
-  }
-  80% {
-    opacity: 0.8;
-  }
+@keyframes floatCard {
+  0%,
   100% {
-    transform: translateY(-10vh) scale(1.1);
-    opacity: 0;
-  }
-}
-
-.beer-bubble {
-  position: absolute;
-  border-radius: 9999px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(254, 216, 12, 0.4) 60%, rgba(180, 0, 18, 0.2));
-  animation: bubbleRise linear infinite;
-}
-
-@keyframes mugSlideLeft {
-  0% {
-    transform: translate(-140%, -20%) rotate(-32deg);
-    opacity: 0;
+    transform: translateY(0);
   }
   50% {
-    transform: translate(-140%, -20%) rotate(-32deg);
-    opacity: 1;
-  }
-  75% {
-    transform: translate(-30px, 0px) rotate(16deg);
-  }
-  85% {
-    transform: translate(-65px, -8px) rotate(-6deg);
-  }
-  100% {
-    transform: translate(-42px, 0px) rotate(4deg);
+    transform: translateY(-8px);
   }
 }
 
-@keyframes mugSlideRight {
-  0% {
-    transform: translate(140%, -20%) rotate(32deg);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(140%, -20%) rotate(32deg);
-    opacity: 1;
-  }
-  75% {
-    transform: translate(30px, 0px) rotate(-16deg);
-  }
-  85% {
-    transform: translate(65px, -8px) rotate(6deg);
-  }
-  100% {
-    transform: translate(42px, 0px) rotate(-4deg);
-  }
+.animate-float {
+  animation: floatCard 6s ease-in-out infinite;
 }
 
-@keyframes popImpact {
-  0%,
-  72% {
-    transform: scale(0) rotate(-15deg);
-    opacity: 0;
-  }
-  76% {
-    transform: scale(1.35) rotate(6deg);
-    opacity: 1;
-  }
-  85% {
-    transform: scale(0.95) rotate(-3deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.05) rotate(2deg);
-    opacity: 1;
-  }
-}
-
-@keyframes splashDroplets {
-  0%,
-  73% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  78% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5) translateY(-24px);
-    opacity: 0;
-  }
-}
-
-@keyframes ringShockwave {
-  0%,
-  73% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  76% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(2.8);
-    opacity: 0;
-  }
-}
-
-.animate-mug-left {
-  animation: mugSlideLeft 1.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.animate-mug-right {
-  animation: mugSlideRight 1.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.animate-clink-pop {
-  animation: popImpact 1.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.animate-splash {
-  animation: splashDroplets 1.35s ease-out forwards;
-}
-
-.animate-shockwave {
-  animation: ringShockwave 1.1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+.animate-float-delayed {
+  animation: floatCard 7s ease-in-out 1.4s infinite;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -306,15 +146,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #splash-screen {
-    display: none !important;
-  }
-  .animate-mug-left,
-  .animate-mug-right,
-  .animate-clink-pop,
-  .animate-splash,
-  .animate-shockwave,
-  .beer-bubble,
+  .animate-float,
+  .animate-float-delayed,
   .animate-bounce,
   .animate-pulse,
   .animate-ping,

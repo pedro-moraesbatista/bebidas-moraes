@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { siteConfig } from '../data/siteConfig'
+import Icon from './Icon'
 import { useCart } from '../lib/cart'
 import { formatBRL } from '../lib/format'
 import { buildOrderMessage, whatsappOrderLink } from '../lib/whatsapp'
@@ -43,71 +43,81 @@ export default function CartDrawer() {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-inverse-surface/60 z-[55] backdrop-blur-xs transition-opacity duration-300 ${isOpen ? '' : 'hidden'}`}
+        className={`fixed inset-0 bg-ink/60 z-[55] backdrop-blur-xs transition-opacity duration-300 ${isOpen ? '' : 'hidden'}`}
         onClick={closeCart}
       ></div>
       <div
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Carrinho de compras devBeer"
+        aria-label="Seu pedido"
         tabIndex={-1}
         inert={!isOpen}
         className={`fixed top-0 right-0 h-full w-full max-w-md bg-surface z-[60] shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Header Drawer */}
-        <div className="p-space-md bg-surface-container flex items-center justify-between">
+        <div className="p-space-md bg-surface-alt border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[24px]">sports_bar</span>
-            <h3 className="font-headline-sm text-headline-sm text-on-surface">Seu Engradado</h3>
-            <span className="px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-bold">{count}</span>
+            <span className="text-primary flex">
+              <Icon name="cart" size={22} />
+            </span>
+            <h3 className="font-headline-sm text-headline-sm text-ink">Seu pedido</h3>
+            <span className="px-2 py-0.5 rounded-full bg-primary text-white font-label-sm text-label-sm font-bold">
+              {count}
+            </span>
           </div>
           <button
             type="button"
             aria-label="Fechar carrinho"
-            className="w-10 h-10 rounded-full bg-surface-container-high hover:bg-surface-variant flex items-center justify-center text-on-surface active:scale-95 transition-transform"
+            className="w-10 h-10 rounded-full bg-surface hover:bg-border flex items-center justify-center text-ink active:scale-95 transition-transform"
             onClick={closeCart}
           >
-            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">close</span>
+            <Icon name="close" size={20} />
           </button>
         </div>
 
         {items.length === 0 ? (
-          /* Empty State */
           <div className="flex-1 flex flex-col items-center justify-center p-space-lg text-center gap-3">
-            <div className="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
-              <span aria-hidden="true" className="material-symbols-outlined text-[40px]">liquor</span>
+            <div className="w-20 h-20 rounded-full bg-surface-alt flex items-center justify-center text-ink-soft">
+              <Icon name="cart" size={36} />
             </div>
-            <h4 className="font-headline-sm text-headline-sm text-on-surface">O engradado está vazio!</h4>
-            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
-              Não deixe o Homer chateado. Escolha algumas geladas no catálogo para começar seu pedido.
+            <h4 className="font-headline-sm text-headline-sm text-ink">Seu carrinho está vazio</h4>
+            <p className="font-body-sm text-body-sm text-ink-soft max-w-xs">
+              Escolha suas bebidas no catálogo e monte seu pedido em minutos.
             </p>
             <button
               type="button"
-              className="mt-2 py-2 px-5 rounded-lg bg-primary text-on-primary font-label-md text-label-md active:scale-95 transition-transform"
+              className="mt-2 py-2 px-5 rounded-lg bg-primary hover:bg-primary-hover text-white font-label-md text-label-md active:scale-95 transition-all"
               onClick={closeCart}
             >
-              Ver Bebidas Geladas
+              Ver catálogo
             </button>
           </div>
         ) : (
           <>
-            {/* Items List Body */}
             <div className="flex-1 overflow-y-auto p-space-md flex flex-col gap-3">
               {items.map((item) => (
                 <div
                   key={item.product.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-surface-container-low shadow-2xs gap-2"
+                  className="flex items-center justify-between p-3 rounded-lg bg-surface-alt gap-2"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-12 h-12 rounded bg-surface-container-high shrink-0 overflow-hidden flex items-center justify-center">
-                      <img alt={item.product.name} className="w-full h-full object-cover" src={item.product.img} />
+                    <div className="w-12 h-12 rounded-lg bg-surface shrink-0 overflow-hidden">
+                      <img
+                        alt={item.product.name}
+                        className="w-full h-full object-cover"
+                        decoding="async"
+                        loading="lazy"
+                        src={item.product.img}
+                      />
                     </div>
                     <div className="flex flex-col min-w-0">
-                      <span className="font-label-md text-label-md text-on-surface truncate">{item.product.name}</span>
-                      <span className="font-body-sm text-body-sm text-primary font-bold">
+                      <span className="font-medium text-sm text-ink truncate">{item.product.name}</span>
+                      {item.product.volume && (
+                        <span className="text-xs text-ink-soft">{item.product.volume}</span>
+                      )}
+                      <span className="text-sm font-semibold text-primary">
                         {formatBRL(item.product.price * item.qty)}
                       </span>
                     </div>
@@ -116,58 +126,63 @@ export default function CartDrawer() {
                     <button
                       type="button"
                       aria-label={`Diminuir quantidade de ${item.product.name}`}
-                      className="w-7 h-7 rounded bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center active:scale-95"
+                      className="w-7 h-7 rounded bg-surface hover:bg-border text-ink flex items-center justify-center active:scale-95 transition-colors"
                       onClick={() => changeQty(item.product.id, -1)}
                     >
-                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">remove</span>
+                      <Icon name="remove" size={16} />
                     </button>
-                    <span className="font-label-sm text-label-sm font-bold w-5 text-center">{item.qty}</span>
+                    <span className="font-label-sm text-label-sm font-bold w-5 text-center text-ink">{item.qty}</span>
                     <button
                       type="button"
                       aria-label={`Aumentar quantidade de ${item.product.name}`}
-                      className="w-7 h-7 rounded bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center active:scale-95"
+                      className="w-7 h-7 rounded bg-surface hover:bg-border text-ink flex items-center justify-center active:scale-95 transition-colors"
                       onClick={() => changeQty(item.product.id, 1)}
                     >
-                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">add</span>
+                      <Icon name="add" size={16} />
                     </button>
                     <button
                       type="button"
-                      aria-label="Remover item"
-                      className="w-7 h-7 rounded text-error hover:bg-error-container/40 flex items-center justify-center active:scale-95 ml-1"
+                      aria-label={`Remover ${item.product.name}`}
+                      className="w-7 h-7 rounded text-red-600 hover:bg-red-50 flex items-center justify-center active:scale-95 transition-colors ml-1"
                       onClick={() => remove(item.product.id)}
                     >
-                      <span aria-hidden="true" className="material-symbols-outlined text-[18px]">delete</span>
+                      <Icon name="trash" size={16} />
                     </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Footer Checkout Form & Summary */}
-            <div className="p-space-md bg-surface-container-low flex flex-col gap-3">
+            <div className="p-space-md bg-surface-alt border-t border-border flex flex-col gap-3">
               <div className="flex flex-col gap-2">
-                <label className="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold" htmlFor="cart-customer-name">
-                  Nome de quem vai brindar
+                <label
+                  className="font-label-sm text-label-sm text-ink-soft uppercase font-bold"
+                  htmlFor="cart-customer-name"
+                >
+                  Seu nome
                 </label>
                 <input
                   autoComplete="name"
-                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container-highest"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-ink text-sm placeholder:text-ink-soft/70 focus:outline-none focus:border-primary"
                   id="cart-customer-name"
                   maxLength={120}
-                  placeholder="Ex: Homer J. Simpson"
+                  placeholder="Como podemos te chamar?"
                   type="text"
                   value={customerName}
                   onChange={(event) => setCustomerName(event.target.value)}
                 />
-                <label className="font-label-sm text-label-sm text-on-surface-variant uppercase font-bold" htmlFor="cart-customer-address">
-                  Endereço de Entrega
+                <label
+                  className="font-label-sm text-label-sm text-ink-soft uppercase font-bold"
+                  htmlFor="cart-customer-address"
+                >
+                  Endereço de entrega
                 </label>
                 <input
                   autoComplete="street-address"
-                  className="w-full px-3 py-2 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/70 focus:outline-none focus:bg-surface-container-highest"
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-ink text-sm placeholder:text-ink-soft/70 focus:outline-none focus:border-primary"
                   id="cart-customer-address"
                   maxLength={120}
-                  placeholder="Ex: Rua Evergreen Terrace, 742"
+                  placeholder="Rua, número, bairro — ou retire no local"
                   type="text"
                   value={customerAddress}
                   onChange={(event) => setCustomerAddress(event.target.value)}
@@ -175,30 +190,32 @@ export default function CartDrawer() {
               </div>
 
               <div className="flex flex-col gap-1 pt-2">
-                <div className="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
-                  <span>Subtotal bebidas</span>
+                <div className="flex justify-between items-center text-ink-soft text-sm">
+                  <span>Subtotal</span>
                   <span>{formatBRL(subtotal)}</span>
                 </div>
-                <div className="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm">
-                  <span>Taxa de Entrega Springfield</span>
-                  <span>{fee === 0 ? `GRÁTIS (Acima R$${siteConfig.delivery.freeAbove})` : formatBRL(fee)}</span>
+                <div className="flex justify-between items-center text-ink-soft text-sm">
+                  <span>Taxa de entrega</span>
+                  <span className={fee === 0 ? 'text-whatsapp font-semibold' : undefined}>
+                    {fee === 0 ? 'GRÁTIS' : formatBRL(fee)}
+                  </span>
                 </div>
-                <div className="flex justify-between items-center text-on-surface font-headline-sm text-headline-sm pt-1">
-                  <span>Total Geral</span>
-                  <span className="text-primary font-black">{formatBRL(total)}</span>
+                <div className="flex justify-between items-center text-ink pt-2 mt-1 border-t border-border">
+                  <span className="font-semibold">Total</span>
+                  <span className="text-lg font-bold text-primary">{formatBRL(total)}</span>
                 </div>
               </div>
 
               <button
                 type="button"
-                className="w-full py-3.5 px-4 rounded-xl bg-tertiary hover:bg-tertiary-container text-on-tertiary font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all"
+                className="w-full py-3.5 px-4 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all"
                 onClick={dispatchWhatsApp}
               >
-                <span aria-hidden="true" className="material-symbols-outlined text-[22px]">send</span>
-                <span>Enviar Pedido no WhatsApp</span>
+                <Icon name="send" size={20} />
+                <span>Enviar pedido no WhatsApp</span>
               </button>
-              <span className="text-center font-label-sm text-label-sm text-on-surface-variant">
-                Você será transferido para o chat com o pedido pronto formatado.
+              <span className="text-center font-label-sm text-label-sm text-ink-soft">
+                Você será direcionado ao WhatsApp com o pedido pronto.
               </span>
             </div>
           </>

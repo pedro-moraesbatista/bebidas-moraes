@@ -1,71 +1,69 @@
-import { badgeToneClasses, type Product } from '../data/products'
+import Icon from './Icon'
+import ComboCollage from './ComboCollage'
+import type { Combo, Product } from '../data/products'
 import { useCart } from '../lib/cart'
 import { formatBRL } from '../lib/format'
 
 interface ProductCardProps {
-  product: Product
+  product: Product | Combo
+}
+
+function discountPercent(price: number, priceFrom: number): number {
+  return Math.round((1 - price / priceFrom) * 100)
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { add } = useCart()
+  const isCombo = 'items' in product
+  const promoDiscount = product.priceFrom ? discountPercent(product.price, product.priceFrom) : undefined
 
   return (
-    <div className="product-card flex flex-col justify-between p-space-md rounded-xl bg-surface-container shadow-sm hover:shadow-md transition-shadow">
-      <div>
-        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-surface-container-high mb-3 flex items-center justify-center">
-          <img alt={product.alt} className="w-full h-full object-cover" decoding="async" loading="lazy" src={product.img} />
-          {product.badge && (
-            <span
-              className={`absolute top-2 left-2 px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold ${badgeToneClasses[product.badge.tone]}`}
-            >
-              {product.badge.text}
-            </span>
-          )}
-          {product.coldChip && (
-            <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/90 text-on-surface font-label-sm text-label-sm flex items-center gap-1">
-              <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-tertiary">ac_unit</span> {product.coldChip}
-            </span>
-          )}
-        </div>
-        {(product.metaLabel || product.specs || product.metaNote) && (
-          <div className="flex items-center justify-between mb-1">
-            {product.metaLabel && (
-              <span className="font-label-sm text-label-sm text-secondary font-bold uppercase">{product.metaLabel}</span>
-            )}
-            {product.specs && (
-              <div className="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
-                <span>ABV {product.specs.abv}</span>
-                <span>•</span>
-                <span>IBU {product.specs.ibu}</span>
-              </div>
-            )}
-            {product.metaNote && (
-              <span
-                className={
-                  product.metaNote.tone === 'tertiary'
-                    ? 'font-label-sm text-label-sm text-tertiary font-bold'
-                    : 'font-label-sm text-label-sm text-on-surface-variant'
-                }
-              >
-                {product.metaNote.text}
-              </span>
-            )}
-          </div>
+    <div className="flex flex-col rounded-xl bg-surface border border-border hover:shadow-md transition-shadow overflow-hidden">
+      <div className="relative aspect-square bg-surface-alt p-3">
+        {isCombo ? (
+          <ComboCollage itemIds={product.items} />
+        ) : (
+          <img
+            alt={product.name}
+            className="w-full h-full object-contain"
+            decoding="async"
+            loading="lazy"
+            src={product.img}
+          />
         )}
-        <h3 className="font-headline-sm text-headline-sm text-on-surface mb-1">{product.name}</h3>
-        <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">{product.description}</p>
+        {product.featured && (
+          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-primary text-white font-label-sm text-label-sm font-bold uppercase">
+            Destaque
+          </span>
+        )}
+        {promoDiscount !== undefined && (
+          <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-accent text-white font-label-sm text-label-sm font-bold">
+            -{promoDiscount}%
+          </span>
+        )}
       </div>
-      <div className="flex items-center justify-between pt-2">
-        <div className="flex flex-col">
-          <span className="font-label-sm text-label-sm text-on-surface-variant">{product.unitLabel}</span>
-          <span className="font-headline-sm text-headline-sm text-primary font-black">{formatBRL(product.price)}</span>
+      <div className="flex flex-col flex-1 gap-1 p-3 pt-2">
+        <span className="text-xs uppercase tracking-wider text-ink-soft font-medium">
+          {isCombo ? 'Combo' : product.brand}
+        </span>
+        <h3 className="text-sm font-semibold text-ink leading-snug line-clamp-2">{product.name}</h3>
+        <span className="text-xs text-ink-soft">
+          {isCombo ? `${product.items.length} itens` : product.volume}
+        </span>
+        <div className="flex items-baseline gap-2 flex-wrap pt-1">
+          <span className="text-lg font-bold text-primary">{formatBRL(product.price)}</span>
+          {product.priceFrom && (
+            <span className="text-xs text-ink-soft line-through">De {formatBRL(product.priceFrom)}</span>
+          )}
         </div>
+      </div>
+      <div className="p-3 pt-0">
         <button
           type="button"
-          className="py-2 px-3.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 active:scale-95 transition-transform shadow-xs"
+          className="w-full py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-sm font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-all"
           onClick={() => add(product)}
         >
-          <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add</span>
+          <Icon name="add" size={18} />
           <span>Adicionar</span>
         </button>
       </div>

@@ -11,91 +11,104 @@ function productById(id: string): Product {
   return product
 }
 
-const duffTributo = productById('duff-tributo-350')
-const buzzCola = productById('buzz-cola-350')
+const brahmaDuploMalte = productById('brahma-duplo-malte-350')
+const cocaColaLata = productById('coca-cola-350')
 
-const customer = { name: 'Homer J. Simpson', address: 'Rua Evergreen Terrace, 742' }
+const customer = { name: 'Maria Souza', address: 'Rua das Palmas, 123' }
 const items: CartItem[] = [
-  { product: duffTributo, qty: 2 },
-  { product: buzzCola, qty: 1 },
+  { product: brahmaDuploMalte, qty: 2 },
+  { product: cocaColaLata, qty: 1 },
 ]
+const itemsSubtotal = brahmaDuploMalte.price * 2 + cocaColaLata.price
 
 describe('buildOrderMessage', () => {
   it('monta a mensagem com título, cliente e endereço', () => {
     const message = buildOrderMessage({
       customer,
       items,
-      subtotal: duffTributo.price * 2 + buzzCola.price,
+      subtotal: itemsSubtotal,
       fee: 8,
-      total: duffTributo.price * 2 + buzzCola.price + 8,
+      total: itemsSubtotal + 8,
     })
 
-    expect(message).toContain('🍺 *NOVO PEDIDO - devBeer Springfield Pub*')
-    expect(message).toContain('👤 *Cliente:* Homer J. Simpson')
-    expect(message).toContain('📍 *Endereço:* Rua Evergreen Terrace, 742')
+    expect(message).toContain('*NOVO PEDIDO — Bebidas Moraes*')
+    expect(message).toContain('*Cliente:* Maria Souza')
+    expect(message).toContain('*Endereço:* Rua das Palmas, 123')
   })
 
   it('usa defaults quando nome e endereço ficam em branco', () => {
     const message = buildOrderMessage({
       customer: { name: '   ', address: '' },
       items,
-      subtotal: 31.3,
+      subtotal: itemsSubtotal,
       fee: 8,
-      total: 39.3,
+      total: itemsSubtotal + 8,
     })
 
-    expect(message).toContain('👤 *Cliente:* Cliente Springfield')
-    expect(message).toContain('📍 *Endereço:* Retirada no Balcão ou a Combinar')
+    expect(message).toContain('*Cliente:* Cliente')
+    expect(message).toContain('*Endereço:* Retirada no local')
   })
 
-  it('lista cada item como quantidade × nome — subtotal da linha', () => {
+  it('lista cada item com total da linha e preço unitário', () => {
     const message = buildOrderMessage({
       customer,
       items,
-      subtotal: duffTributo.price * 2 + buzzCola.price,
+      subtotal: itemsSubtotal,
       fee: 8,
-      total: duffTributo.price * 2 + buzzCola.price + 8,
+      total: itemsSubtotal + 8,
     })
 
-    expect(message).toContain('• 2x Duff Beer Tributo Lata 350ml — R$ 23,80')
-    expect(message).toContain(`• 2x ${duffTributo.name} — R$ 23,80`)
-    expect(message).toContain('• 1x Buzz Cola Lata Vintage 350ml — R$ 7,50')
-    expect(message).toContain(`• 1x ${buzzCola.name} — ${formatBRL(buzzCola.price)}`)
+    expect(message).toContain('• 2x Brahma Duplo Malte — R$ 7,14 (R$ 3,57/un)')
+    expect(message).toContain(`• 2x ${brahmaDuploMalte.name} — ${formatBRL(brahmaDuploMalte.price * 2)} (${formatBRL(brahmaDuploMalte.price)}/un)`)
+    expect(message).toContain('• 1x Coca-Cola Original — R$ 3,99 (R$ 3,99/un)')
+    expect(message).toContain(`• 1x ${cocaColaLata.name} — ${formatBRL(cocaColaLata.price)} (${formatBRL(cocaColaLata.price)}/un)`)
   })
 
   it('marca a taxa de entrega como GRÁTIS quando fee é 0', () => {
     const message = buildOrderMessage({
       customer,
       items,
-      subtotal: duffTributo.price * 2 + buzzCola.price,
+      subtotal: itemsSubtotal,
       fee: 0,
-      total: duffTributo.price * 2 + buzzCola.price,
+      total: itemsSubtotal,
     })
 
-    expect(message).toContain('🛵 *Taxa de Entrega:* GRÁTIS')
+    expect(message).toContain('*Taxa de entrega:* GRÁTIS')
   })
 
   it('formata a taxa, o subtotal e o total quando fee é maior que 0', () => {
     const message = buildOrderMessage({
       customer,
       items,
-      subtotal: 23.8,
+      subtotal: itemsSubtotal,
       fee: 8,
-      total: 31.8,
+      total: itemsSubtotal + 8,
     })
 
-    expect(message).toContain('🛵 *Taxa de Entrega:* R$ 8,00')
-    expect(message).toContain('💵 *Subtotal:* R$ 23,80')
-    expect(message).toContain('⭐ *TOTAL GERAL:* R$ 31,80')
+    expect(message).toContain('*Taxa de entrega:* R$ 8,00')
+    expect(message).toContain(`*Subtotal:* ${formatBRL(itemsSubtotal)}`)
+    expect(message).toContain(`*TOTAL:* ${formatBRL(itemsSubtotal + 8)}`)
+  })
+
+  it('fecha com o rodapé de confirmação do catálogo digital', () => {
+    const message = buildOrderMessage({
+      customer,
+      items,
+      subtotal: itemsSubtotal,
+      fee: 8,
+      total: itemsSubtotal + 8,
+    })
+
+    expect(message).toContain('_Pedido enviado pelo catálogo digital. Aguardo confirmação. Obrigado!_')
   })
 })
 
 describe('whatsappOrderLink', () => {
-  it('monta o link wa.me com o número placeholder e o texto codificado', () => {
+  it('monta o link wa.me com o número do cliente e o texto codificado', () => {
     const text = 'mensagem com acentos: não, coração, ção'
     const link = whatsappOrderLink(text)
 
-    expect(link.startsWith('https://wa.me/5511999999999?text=')).toBe(true)
+    expect(link.startsWith('https://wa.me/5583998461353?text=')).toBe(true)
     expect(link).toBe(`https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(text)}`)
   })
 
@@ -103,17 +116,16 @@ describe('whatsappOrderLink', () => {
     const message = buildOrderMessage({
       customer,
       items,
-      subtotal: duffTributo.price * 2 + buzzCola.price,
+      subtotal: itemsSubtotal,
       fee: 8,
-      total: duffTributo.price * 2 + buzzCola.price + 8,
+      total: itemsSubtotal + 8,
     })
     const link = whatsappOrderLink(message)
-    const rawText = link.slice('https://wa.me/5511999999999?text='.length)
-    const decoded = decodeURIComponent(rawText)
+    const rawText = link.slice('https://wa.me/5583998461353?text='.length)
 
     expect(link).toBe(`https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(message)}`)
     expect(decodeURIComponent(rawText)).toBe(message)
-    expect(decoded).toContain('• 2x Duff Beer Tributo Lata 350ml — R$ 23,80')
-    expect(decoded).toContain('⭐ *TOTAL GERAL:* R$ 39,30')
+    expect(decodeURIComponent(rawText)).toContain('• 2x Brahma Duplo Malte — R$ 7,14 (R$ 3,57/un)')
+    expect(decodeURIComponent(rawText)).toContain(`*TOTAL:* ${formatBRL(itemsSubtotal + 8)}`)
   })
 })

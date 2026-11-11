@@ -1,4 +1,6 @@
-import { badgeToneClasses, combos } from '../data/products'
+import Icon from './Icon'
+import ComboCollage from './ComboCollage'
+import { combos } from '../data/products'
 import { useCart } from '../lib/cart'
 import { formatBRL } from '../lib/format'
 
@@ -7,32 +9,32 @@ export default function CombosSection() {
 
   return (
     <section className="px-margin my-6 flex flex-col gap-space-md" id="combos">
-      <div className="flex flex-col">
-        <span className="font-label-sm text-label-sm text-primary font-bold uppercase">Mais Economia</span>
-        <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Combos da Rodada</h3>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+      <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-ink">Combos que valem a pena</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {combos.map((combo) => (
-          <div key={combo.id} className="p-space-md rounded-xl bg-surface-container flex flex-col justify-between shadow-xs">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span
-                  className={`px-2 py-0.5 rounded-full font-label-sm text-label-sm font-bold ${badgeToneClasses[combo.tag.tone]}`}
-                >
-                  {combo.tag.text}
-                </span>
-                <span className="font-headline-sm text-headline-sm text-primary font-black">{formatBRL(combo.price)}</span>
-              </div>
-              <h4 className="font-headline-sm text-headline-sm text-on-surface mb-1">{combo.name}</h4>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mb-4">{combo.description}</p>
+          <div
+            key={combo.id}
+            className="rounded-xl bg-surface border border-border p-3 flex flex-col gap-2"
+          >
+            <div className="aspect-square rounded-lg bg-surface-alt p-3">
+              <ComboCollage itemIds={combo.items} />
+            </div>
+            <span className="self-start px-2 py-0.5 rounded-full bg-ink text-white font-label-sm text-label-sm font-bold uppercase tracking-wider">
+              Combo
+            </span>
+            <h3 className="font-semibold text-ink leading-snug">{combo.name}</h3>
+            <p className="text-xs text-ink-soft line-clamp-2">{combo.description}</p>
+            <div className="flex items-baseline gap-2 flex-wrap pt-1 mt-auto">
+              <span className="text-lg font-bold text-primary">{formatBRL(combo.price)}</span>
+              <span className="text-xs text-ink-soft line-through">De {formatBRL(combo.priceFrom)}</span>
             </div>
             <button
               type="button"
-              className="w-full py-2.5 rounded-lg bg-surface-container-highest hover:bg-surface-variant text-on-surface font-label-md text-label-md flex items-center justify-center gap-1 active:scale-95 transition-all"
+              className="w-full py-2.5 rounded-lg bg-surface-alt hover:bg-border text-ink text-sm font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-all"
               onClick={() => add(combo)}
             >
-              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              <span>Adicionar Combo</span>
+              <Icon name="add" size={18} />
+              <span>Adicionar</span>
             </button>
           </div>
         ))}

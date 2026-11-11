@@ -1,35 +1,35 @@
-# devBeer — Landing Page 🍻
+# Bebidas Moraes — Catálogo Digital
 
-Landing page do **devBeer**, depósito artesanal de bebidas de Springfield. Implementação fiel do design aprovado no **Google Stitch** (projeto *"devBeer Landing Page"*, ID `7945143848793903505`), transformado em uma aplicação React funcional, responsiva e com experiência comercial completa.
+Landing page do **Bebidas Moraes**, depósito de bebidas com catálogo digital e pedidos via WhatsApp. Implementação React funcional, responsiva e com experiência comercial completa — uma demonstração da **Moraes Tecnologia** de como qualquer distribuidora pode vender online.
 
-> ⚠️ Projeto tributo/conceitual inspirado na cultura pop (Duff, Springfield). Nenhum item é estoque real e nenhum dado comercial definitivo está configurado — ver [Configuração comercial](#configuração-comercial).
+> ℹ️ Produtos e preços são **demonstrativos**, com referências públicas de varejo (Carrefour/Extra Mercado). As imagens vêm de CDNs públicos de varejo para fins de demonstração — em uso real, substitua pelas fotos oficiais do cliente em `public/assets-src/`.
 
 ## Links
 
 - **Produção:** https://devbeer-landing.vercel.app
 - **Repositório:** https://github.com/pedro-moraesbatista/devbeer-landing
-- **Design (fonte de verdade visual):** projeto no Stitch + referências em [`design/`](design/) (HTML exportado, screenshots e assets originais)
+- **WhatsApp da loja:** (83) 99846-1353
 
 ## Funcionalidades
 
-- **Splash cinematográfico** com a animação do brinde dos copos: entrada em direções opostas, encontro, impacto, respingos/espuma e badge "CLINK!" — reproduzida na abertura e re-executável (clique no banner do hero ou botão "Rever Brinde")
-- **Hero** com badge, banner animado dos copos, catchphrase e CTAs
-- **Combo em destaque** ("Destaque do Moe") com preço promocional
-- **Catálogo data-driven** com 8 produtos e filtros por categoria (pills)
-- **Combos** da rodada em formato bento
-- **Seção de delivery** (cobertura, horário, tempo estimado, frete grátis)
+- **Hero** com badge "Catálogo digital com pedido pelo WhatsApp", CTAs para o catálogo e para o WhatsApp, e selos de confiança (entrega no mesmo dia, compra segura +18, 8h às 22h)
+- **Combo em destaque** ("Promoção da semana") com colagem 2x2 dos itens, preço riscado e botão de adicionar
+- **Como funciona** — pedido em 3 passos (escolher bebidas, montar pedido, enviar no WhatsApp)
+- **Catálogo data-driven** com 24 produtos reais, busca por nome/marca (normalizada), filtros por categoria (pills) e ordenação (relevância, menor/maior preço, A–Z)
+- **Combos** em grid com colagem das imagens dos itens e pill "COMBO"
+- **Seção de entrega** (mesmo dia, horário 8h–22h todos os dias, cobertura, pagamento na entrega)
 - **Carrinho completo**: adicionar/remover/alterar quantidades, subtotal, taxa de entrega (grátis acima de R$ 80), total, persistência em `localStorage` e drawer lateral
-- **Pedido via WhatsApp**: mensagem formatada com itens, quantidades, valores e total
-- **Botão flutuante de atendimento** e nav inferior funcional
-- Animações respeitando `prefers-reduced-motion`, layout sem overflow horizontal de 320px a desktop
+- **Pedido via WhatsApp**: mensagem formatada com itens, quantidades, valores, subtotal, taxa e total
+- **Botão flutuante de WhatsApp** e nav inferior funcional (Início, Busca, Combos, Pedido, WhatsApp)
+- Ícones em SVG inline (`src/components/Icon.tsx`, sem fonte de ícones externa), animações respeitando `prefers-reduced-motion`, layout sem overflow horizontal de 320px a desktop
 
 ## Stack
 
 - [React 19](https://react.dev/) + [TypeScript 7](https://www.typescriptlang.org/) (strict)
 - [Vite 8](https://vite.dev/)
-- [Tailwind CSS v4](https://tailwindcss.com/) com design tokens do Stitch declarados em `src/index.css` (`@theme`)
-- Testes: [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) (60 testes) · screenshots/checagens com [Playwright](https://playwright.dev/)
-- Fontes: Bricolage Grotesque, Hanken Grotesk, Space Grotesk + Material Symbols (Google Fonts)
+- [Tailwind CSS v4](https://tailwindcss.com/) com design tokens declarados em `src/index.css` (`@theme`)
+- Testes: [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) · screenshots/checagens com [Playwright](https://playwright.dev/)
+- Fonte: Hanken Grotesk (Google Fonts)
 
 ## Desenvolvimento
 
@@ -45,20 +45,19 @@ npm run lint       # lint (oxlint)
 Scripts auxiliares:
 
 ```bash
-npm run optimize:images   # regenera public/assets/*.webp a partir de design/assets (sharp)
-node scripts/visual-check.mjs   # screenshots (desktop/tablet/mobile) + 25 checagens de fidelidade, via vite preview
+npm run optimize:images    # regenera public/assets/*.webp a partir de public/assets-src (sharp)
+node scripts/visual-check.mjs   # screenshots (desktop/tablet/mobile) + checagens visuais, via vite preview
 ```
 
-Screenshots da implementação ficam em [`docs/screenshots/`](docs/screenshots/).
+Screenshots da implementação ficam em [`docs/screenshots/`](docs/screenshots/) e o relatório em `docs/visual-report.json`.
 
 ## Estrutura
 
 ```
-design/               # fonte de verdade visual extraída do Stitch (HTML, screenshots, assets brutos)
-public/assets/        # imagens otimizadas em produção (.webp)
-src/components/       # seções da landing (Header, SplashOverlay, Hero, Catalog, CartDrawer, ...)
-src/data/products.ts  # catálogo data-driven: produtos, categorias, combos
-src/data/siteConfig.ts# configuração comercial centralizada (WhatsApp, entrega, avisos legais)
+public/assets/         # imagens otimizadas em produção (.webp) — origem em public/assets-src
+src/components/       # seções da landing (Header, Hero, ComboHighlight, ComoFunciona, Catalog, CartDrawer, ...)
+src/data/products.ts  # catálogo data-driven: 24 produtos, 4 combos, categorias
+src/data/siteConfig.ts# configuração comercial centralizada (WhatsApp, entrega, avisos legais, Moraes)
 src/lib/              # carrinho (Context), formatação BRL, geração de mensagem/link WhatsApp
 scripts/              # otimização de imagens e validação visual (Playwright)
 docs/                 # screenshots e relatório de validação
@@ -70,19 +69,17 @@ Tudo que é dado comercial vive centralizado — nada hardcoded em componentes:
 
 | O quê | Onde | Situação |
 |---|---|---|
-| Número do WhatsApp | `src/data/siteConfig.ts` → `whatsapp.number` | ⚠️ **Placeholder** (`5511999999999`) — substituir pelo número real |
-| Preços e produtos | `src/data/products.ts` | Conceituais (tributo) — configurar com o catálogo real |
-| Taxa de entrega / frete grátis | `siteConfig.delivery` | R$ 8,00 / grátis acima de R$ 80 (valores do design) |
-| Endereço / raio / horários | `siteConfig.delivery` | Textos do design — ajustar para o negócio real |
+| Número do WhatsApp | `src/data/siteConfig.ts` → `whatsapp.number` | (83) 99846-1353 (fornecido pelo cliente) |
+| Canal comercial Moraes | `siteConfig.moraes.whatsapp` | ⚠️ **Placeholder** — substituir pelo canal dedicado |
+| Produtos e preços | `src/data/products.ts` | Demonstrativos (referência pública de varejo) — ajustar com o catálogo real |
+| Taxa de entrega / frete grátis | `siteConfig.delivery` | R$ 8,00 / grátis acima de R$ 80 |
+| Horário / cobertura | `siteConfig.delivery` | 8h às 22h, todos os dias; cidade e região |
+| Imagens de produto | `public/assets/` | CDNs públicos de varejo (demonstração) — substituir pelas fotos oficiais do cliente |
 
-## Desvios intencionais do design (documentados)
+## Moraes Tecnologia
 
-- Badge do carrinho dinâmico (era "3" estático) e thumbs com a imagem real do produto no drawer
-- Menu lateral e nav inferior funcional (eram botões/links mortos no design) — sem mudanças visuais, tokens do próprio design
-- Filtro "Combos" exibe os 3 combos (no design o filtro resultava em grid vazio)
-- Imagens reencodadas em WebP (fidelidade visual mantida, 2MB → ~370KB)
-- Ano do rodapé dinâmico; textos comerciais ("RESTAM 7 CRATES", "GRÁTIS acima de R$80") vindos de configuração/dados
+"Quer um catálogo como este para sua empresa?" — o CTA do rodapé (e o número `siteConfig.moraes.whatsapp`) é o canal comercial da Moraes Tecnologia para replicar esta solução em outros negócios. Configure o número dedicado antes de publicar.
 
 ## Testes
 
-60 testes (7 suítes) cobrem: carrinho (operações, frete, persistência, storage corrompido), catálogo (filtros, contadores, imagens locais), drawer (fluxo, resumo financeiro, dispatch WhatsApp com URL validada), splash (timers, Pular, reduced-motion, remount), modais (ESC, foco), formatação BRL e mensagem do WhatsApp.
+Suíte Vitest cobre: carrinho (operações, frete grátis, persistência, storage corrompido, combos com imagem resolvida), catálogo (busca, filtros por categoria, ordenação, contador, imagens locais, estado vazio), drawer (fluxo, resumo financeiro, dispatch do WhatsApp com URL validada), modais (ESC, foco, inert), formatação BRL e mensagem do pedido no WhatsApp. Rode com `npm run test:run`.
