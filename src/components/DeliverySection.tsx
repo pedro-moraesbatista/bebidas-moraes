@@ -1,12 +1,13 @@
 import Icon, { type IconName } from './Icon'
+import StoreStatus from './StoreStatus'
 import { siteConfig } from '../data/siteConfig'
 import { whatsappOrderLink } from '../lib/whatsapp'
 
 const WHATSAPP_GREETING = 'Olá! Quero fazer um pedido na Bebidas Moraes!'
 
-const deliveryCards: Array<{ icon: IconName; title: string; text: string }> = [
+const deliveryCards: Array<{ icon: IconName; title: string; text: string; liveStatus?: boolean }> = [
   { icon: 'truck', title: 'Entrega no mesmo dia', text: 'Pedidos confirmados saem para entrega rapidamente.' },
-  { icon: 'clock', title: 'Horário', text: siteConfig.delivery.hours },
+  { icon: 'clock', title: 'Horário', text: siteConfig.delivery.hours, liveStatus: true },
   { icon: 'map-pin', title: 'Cobertura', text: siteConfig.delivery.coverage },
   { icon: 'shield-check', title: 'Pagamento na entrega', text: 'A combinar diretamente com o atendente.' },
 ]
@@ -24,6 +25,11 @@ export default function DeliverySection() {
               </span>
               <div className="flex flex-col gap-0.5">
                 <h3 className="font-semibold text-ink">{card.title}</h3>
+                {card.liveStatus && (
+                  <div className="my-1">
+                    <StoreStatus />
+                  </div>
+                )}
                 <p className="font-body-sm text-body-sm text-ink-soft">{card.text}</p>
               </div>
             </div>

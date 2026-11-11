@@ -6,8 +6,8 @@ Landing page do **Bebidas Moraes**, depósito de bebidas com catálogo digital e
 
 ## Links
 
-- **Produção:** https://devbeer-landing.vercel.app
-- **Repositório:** https://github.com/pedro-moraesbatista/devbeer-landing
+- **Produção:** https://bebidas-moraes.vercel.app
+- **Repositório:** https://github.com/pedro-moraesbatista/bebidas-moraes
 - **WhatsApp da loja:** (83) 99846-1353
 
 ## Funcionalidades

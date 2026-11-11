@@ -29,6 +29,10 @@ async function newPage(viewport, reducedMotion = 'no-preference') {
 async function gotoPage(page) {
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
   await page.waitForSelector('main h1', { timeout: 15000 })
+  const overlay = page.locator('#opening-overlay')
+  if ((await overlay.count()) > 0) {
+    await overlay.click({ timeout: 2000 }).catch(() => {})
+  }
   await waitForImages(page, { lazy: false })
 }
 
@@ -241,6 +245,76 @@ for (const viewport of VIEWPORTS) {
   })
   record('prefers-reduced-motion: animação de flutuação desativada', floatDisabled)
   await context.close()
+}
+
+// ---------- Overlay de abertura ----------
+{
+  const { context, page } = await newPage(VIEWPORTS[0])
+  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
+  const appeared = await page
+    .waitForSelector('#opening-overlay', { state: 'visible', timeout: 3000 })
+    .then(() => true, () => false)
+  await page.waitForTimeout(2300)
+  const gone = (await page.locator('#opening-overlay').count()) === 0
+  record(
+    'overlay de abertura aparece na carga e sai do DOM em ~2.2s',
+    appeared && gone,
+    `apareceu=${appeared} saiu=${gone}`,
+  )
+  await context.close()
+}
+
+// ---------- Catálogo: imagens em canvas quadrado ----------
+{
+  const { context, page } = await newPage(VIEWPORTS[0])
+  await gotoPage(page)
+  await scrollThrough(page)
+  await waitForImages(page, { timeout: 4000 })
+  const dims = await page.evaluate(() =>
+    [...document.querySelectorAll('#catalogo img')].map((img) => [img.naturalWidth, img.naturalHeight]),
+  )
+  const nonSquare = dims.filter(([w, h]) => w !== h)
+  record(
+    'imagens do catálogo em canvas quadrado',
+    dims.length === 24 && nonSquare.length === 0,
+    `${dims.length} imgs no grid, ${nonSquare.length} fora de 1:1`,
+  )
+  await context.close()
+}
+
+// ---------- Status da loja via clock do Playwright ----------
+{
+  const { context, page } = await newPage(VIEWPORTS[2])
+  await page.clock.install({ time: new Date('2026-11-11T23:00:00-03:00') })
+  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('main h1', { timeout: 15000 })
+  const closed = await page.evaluate(() => {
+    const text = document.body.innerText
+    return {
+      pill: text.includes('Fechado agora') && text.includes('Abrimos amanhã às 8h'),
+      banner: text.includes('Estamos fechados agora') && text.includes('Monte seu pedido no catálogo'),
+    }
+  })
+  await context.close()
+
+  const { context: openContext, page: openPage } = await newPage(VIEWPORTS[2])
+  await openPage.clock.install({ time: new Date('2026-11-11T10:00:00-03:00') })
+  await openPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' })
+  await openPage.waitForSelector('main h1', { timeout: 15000 })
+  const open = await openPage.evaluate(() => {
+    const text = document.body.innerText
+    return {
+      pill: text.includes('Aberto agora') && text.includes('até as 22h'),
+      noBanner: !text.includes('Estamos fechados agora'),
+    }
+  })
+  await openContext.close()
+
+  record(
+    'status da loja reflete horário real (clock: 23h fechada com banner, 10h aberta)',
+    closed.pill && closed.banner && open.pill && open.noBanner,
+    `23h pill=${closed.pill} banner=${closed.banner} | 10h pill=${open.pill} sem-banner=${open.noBanner}`,
+  )
 }
 
 await browser.close()

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Icon, { type IconName } from './Icon'
+import StoreStatus from './StoreStatus'
 import Wordmark from './Wordmark'
 import { siteConfig } from '../data/siteConfig'
 import { useCart } from '../lib/cart'
@@ -41,9 +42,8 @@ export default function Header({ onOpenMenu }: HeaderProps) {
           </div>
         </div>
         <div className="flex items-center gap-space-xs">
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-ink-soft">
-            <Icon name="clock" size={16} className="text-whatsapp" />
-            <span className="font-label-md text-label-md">8h–22h • Todos os dias</span>
+          <div className="hidden sm:flex items-center">
+            <StoreStatus />
           </div>
           <button
             type="button"
@@ -60,13 +60,10 @@ export default function Header({ onOpenMenu }: HeaderProps) {
           </button>
         </div>
       </div>
-      <div className="px-margin pb-2 flex items-center justify-between sm:hidden">
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-alt text-ink">
-          <Icon name="clock" size={14} className="text-whatsapp" />
-          <span className="font-label-sm text-label-sm">8h–22h • Todos os dias</span>
-        </span>
+      <div className="px-margin pb-2 flex items-center justify-between gap-2 sm:hidden">
+        <StoreStatus />
         <a
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-whatsapp text-white"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-whatsapp text-white shrink-0"
           href={whatsappOrderLink(WHATSAPP_GREETING)}
           rel="noopener noreferrer"
           target="_blank"

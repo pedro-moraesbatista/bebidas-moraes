@@ -15,7 +15,13 @@ for (const file of files) {
   const name = file.replace(/\.(jpe?g|png)$/i, '')
   const output = join(OUT_DIR, `${name}.webp`)
   const info = await sharp(input)
-    .resize({ width: TARGET_WIDTH, withoutEnlargement: true })
+    .resize({
+      width: TARGET_WIDTH,
+      height: TARGET_WIDTH,
+      fit: 'contain',
+      background: '#FFFFFF',
+      withoutEnlargement: false,
+    })
     .webp({ quality: QUALITY })
     .toFile(output)
   console.log(`${name}.webp ${info.width}x${info.height} ${(info.size / 1024).toFixed(0)}KB`)

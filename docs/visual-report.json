@@ -1,6 +1,6 @@
 {
-  "base": "https://devbeer-landing.vercel.app",
-  "total": 24,
+  "base": "http://localhost:4173",
+  "total": 27,
   "failed": 0,
   "checks": [
     {
@@ -122,6 +122,21 @@
       "name": "prefers-reduced-motion: animação de flutuação desativada",
       "pass": true,
       "detail": ""
+    },
+    {
+      "name": "overlay de abertura aparece na carga e sai do DOM em ~2.2s",
+      "pass": true,
+      "detail": "apareceu=true saiu=true"
+    },
+    {
+      "name": "imagens do catálogo em canvas quadrado",
+      "pass": true,
+      "detail": "24 imgs no grid, 0 fora de 1:1"
+    },
+    {
+      "name": "status da loja reflete horário real (clock: 23h fechada com banner, 10h aberta)",
+      "pass": true,
+      "detail": "23h pill=true banner=true | 10h pill=true sem-banner=true"
     }
   ]
 }

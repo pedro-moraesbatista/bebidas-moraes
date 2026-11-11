@@ -139,6 +139,64 @@
   animation: floatCard 7s ease-in-out 1.4s infinite;
 }
 
+@keyframes signSwing {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+.animate-sign-swing {
+  animation: signSwing 2.4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes liquidFill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(0.8);
+  }
+}
+
+.animate-liquid-fill {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: liquidFill 1s ease-out both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 400ms ease-out both;
+}
+
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress-fill {
+  animation: progressFill 1400ms linear both;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -151,7 +209,11 @@
   .animate-bounce,
   .animate-pulse,
   .animate-ping,
-  .animate-spin {
+  .animate-spin,
+  .animate-sign-swing,
+  .animate-liquid-fill,
+  .animate-fade-up,
+  .animate-progress-fill {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }

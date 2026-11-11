@@ -10,7 +10,9 @@ import Footer from './components/Footer'
 import Header, { SideMenu } from './components/Header'
 import Hero from './components/Hero'
 import Icon from './components/Icon'
+import OpeningOverlay from './components/OpeningOverlay'
 import WhatsAppFab from './components/WhatsAppFab'
+import { ClosedBanner } from './components/StoreStatus'
 import { CartProvider, useCart } from './lib/cart'
 
 export default function App() {
@@ -21,6 +23,7 @@ export default function App() {
 
   return (
     <CartProvider>
+      <OpeningOverlay />
       <AppShell menuOpen={menuOpen} onOpenMenu={openMenu} />
       <SideMenu open={menuOpen} onClose={closeMenu} />
       <CartDrawer />
@@ -44,6 +47,7 @@ function AppShell({ menuOpen, onOpenMenu }: AppShellProps) {
       <Header onOpenMenu={onOpenMenu} />
       <main className="flex flex-col relative w-full pt-20 pb-28 bg-surface min-h-screen">
         <div className="flex flex-col w-full relative overflow-x-hidden">
+          <ClosedBanner />
           <Hero />
           <ComboHighlight />
           <ComoFunciona />

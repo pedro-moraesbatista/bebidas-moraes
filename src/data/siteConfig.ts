@@ -13,6 +13,7 @@ export const siteConfig = {
     freeAbove: 80,
     etaLabel: 'Entrega no mesmo dia',
     hours: 'Todos os dias, das 8h às 22h',
+    storeHours: { openHour: 8, closeHour: 22, timeZone: 'America/Fortaleza' },
     coverage: 'Atendemos a cidade e região — consulte sua taxa na confirmação do pedido.',
   },
   legal: {
